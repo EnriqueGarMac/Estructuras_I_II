@@ -135,12 +135,11 @@ def plot_values_shear_force(element, factor):
     y1 = -element.vertex_1.z
     x2 = element.vertex_2.x
     y2 = -element.vertex_2.z
-
-    # Cambio el signo para que sea consecuente con el criterio de signos explicado en clase
+    print('dale')
     shear_1 = -element.shear_force[0]   
     shear_2 = -element.shear_force[-1]
     n = len(element.shear_force)
-    print 'cambio'
+
     # apply angle ai
     interpolate = np.linspace(0, 1, n)
     dx = x2 - x1
