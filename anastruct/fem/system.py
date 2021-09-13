@@ -33,7 +33,7 @@ if TYPE_CHECKING:
 
 class SystemElements:
     """
-    Modelling any structure starts with an object of this class.
+    Objeto representando a una estructura plana
 
     :ivar EA: Standard axial stiffness of elements, default=15,000
     :ivar EI: Standard bending stiffness of elements, default=5,000
