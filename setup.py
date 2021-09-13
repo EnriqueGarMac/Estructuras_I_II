@@ -17,11 +17,11 @@ exec(open("anastruct/_version.py").read())
 setup(
     name="anastruct",
     version=__version__,
-    description="analyse 2D structures.",
+    description="Análisis de pórticos planos",
     author="Ritchie Vink",
-    author_email="ritchie46@gmail.com",
+    author_email="enriquegm@ugr.es",
     url="https://ritchievink.com",
-    download_url="https://github.com/ritchie46/anaStruct",
+    download_url="https://github.com/EnriqueGarMac/Estructuras_I",
     license="GPL-3.0",
     packages=[
         "anastruct",
