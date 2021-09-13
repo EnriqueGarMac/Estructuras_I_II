@@ -135,9 +135,8 @@ def plot_values_shear_force(element, factor):
     y1 = -element.vertex_1.z
     x2 = element.vertex_2.x
     y2 = -element.vertex_2.z
-    print('dale')
-    shear_1 = -element.shear_force[0]*0   
-    shear_2 = -element.shear_force[-1]*0
+    shear_1 = -element.shear_force[0] 
+    shear_2 = -element.shear_force[-1]
     n = len(element.shear_force)
 
     # apply angle ai
