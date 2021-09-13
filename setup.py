@@ -18,10 +18,9 @@ setup(
     name="anastruct",
     version=__version__,
     description="Análisis de pórticos planos",
-    author="Ritchie Vink",
+    author="Enrique GM",
     author_email="enriquegm@ugr.es",
     url="https://github.com/EnriqueGarMac/Estructuras_I",
-    download_url="https://github.com/EnriqueGarMac/Estructuras_I",
     license="GPL-3.0",
     packages=[
         "anastruct",
