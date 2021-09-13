@@ -1,22 +1,8 @@
 import sys
 from setuptools import setup
 
-try:
-    from Cython.Build import cythonize
-
-    em = cythonize(
-        ["anastruct/cython/cbasic.pyx", "anastruct/fem/cython/celements.pyx"]
-    )
-except Exception:
-    em = []
-
-if sys.version_info[0] == 3 and sys.version_info[1] < 7:
-    sys.exit("Sorry, Python < 3.5 is not supported")
-
-exec(open("anastruct/_version.py").read())
 setup(
     name="anastruct",
-    version=__version__,
     description="Análisis de pórticos planos",
     author="Enrique GM",
     author_email="enriquegm@ugr.es",
@@ -34,8 +20,5 @@ setup(
         "anastruct.fem.util",
         "anastruct.sectionbase",
     ],
-    package_data={"": ["*.xml"]},
-    package_dir="",
     install_requires=["matplotlib>=3.0", "numpy>=1.15.4", "scipy>=1.1.0"],
-    ext_modules=em,
 )
