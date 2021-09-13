@@ -140,7 +140,7 @@ def plot_values_shear_force(element, factor):
     shear_1 = -element.shear_force[0]   
     shear_2 = -element.shear_force[-1]
     n = len(element.shear_force)
-
+    print 'cambio'
     # apply angle ai
     interpolate = np.linspace(0, 1, n)
     dx = x2 - x1
