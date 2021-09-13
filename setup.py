@@ -20,7 +20,7 @@ setup(
     description="Análisis de pórticos planos",
     author="Ritchie Vink",
     author_email="enriquegm@ugr.es",
-    url="https://ritchievink.com",
+    url="https://github.com/EnriqueGarMac/Estructuras_I",
     download_url="https://github.com/EnriqueGarMac/Estructuras_I",
     license="GPL-3.0",
     packages=[
