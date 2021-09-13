@@ -183,7 +183,7 @@ class ElementLevel:
         """
         Cálculo del momento flector - Curva cúbica
         """
-        dT = (element.node_2.Ty + element.node_1.Ty)  # T2 - (-T1)
+        dT = -(element.node_2.Ty + element.node_1.Ty)  # T2 - (-T1)
 
         iteration_factor = np.linspace(0, 1, con)
         x = iteration_factor * element.l

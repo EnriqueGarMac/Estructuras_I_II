@@ -136,8 +136,9 @@ def plot_values_shear_force(element, factor):
     x2 = element.vertex_2.x
     y2 = -element.vertex_2.z
 
-    shear_1 = element.shear_force[0]
-    shear_2 = element.shear_force[-1]
+    # Cambio el signo para que sea consecuente con el criterio de signos explicado en clase
+    shear_1 = -element.shear_force[0]   
+    shear_2 = -element.shear_force[-1]
     n = len(element.shear_force)
 
     # apply angle ai

@@ -657,7 +657,7 @@ class SystemElements:
 
         system_components.assembly.process_conditions(self)
 
-        # Resolver el problema estático Ku=f
+        # Resolver el problema estático Ku=f !!!!!!!!
         reduced_displacement_vector = np.linalg.solve(
             self.reduced_system_matrix, self.reduced_force_vector
         )
@@ -684,7 +684,7 @@ class SystemElements:
             el.element_displacement_vector[3:] = self.system_displacement_vector[
                 index_node_2 : index_node_2 + 3
             ]
-            el.determine_force_vector()
+            el.determine_force_vector()  # K*u - Esfuerzos
 
         if not naked:
             # determining the node results in post processing class
