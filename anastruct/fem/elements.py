@@ -145,6 +145,9 @@ class Element:
         return out
 
     def determine_force_vector(self) -> Optional[np.ndarray]:
+        """
+        Calcular esfuerzos en extremos de las vigas
+        """
         self.element_force_vector = np.dot(
             self.stiffness_matrix, self.element_displacement_vector
         )
@@ -263,6 +266,7 @@ def constitutive_matrix(
     :param l: (float) Length
     :param spring: (int) 1 or 2. Apply a hinge on the first of the second node.
     :return: (array)
+    # M1,M2 = [4EI/L 2EI/L; 2EI/L,4EI/L] bending https://people.duke.edu/~hpgavin/cee421/beam-element.pdf
     """
     matrix = np.array(
         [[EA / l, 0, 0], [0, 4 * EI / l, -2 * EI / l], [0, -2 * EI / l, 4 * EI / l]]

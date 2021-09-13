@@ -33,7 +33,7 @@ class SystemLevel:
             self.system.node_map[k].reset()
 
             if k in self.system.loads_moment:
-                self.system.node_map[k].Ty += self.system.loads_moment[k]
+                self.system.node_map[k].Ty += self.system.loads_moment[k] # Suma momento puntual
 
             if k in self.system.loads_point:
                 Fx, Fz = self.system.loads_point[k]
@@ -112,7 +112,7 @@ class ElementLevel:
             + element.element_primary_force_vector[0],
             Fz=element.element_force_vector[1]
             + element.element_primary_force_vector[1],
-            Ty=element.element_force_vector[2] + element.element_primary_force_vector[2]
+            Ty=element.element_force_vector[2] + element.element_primary_force_vector[2]  # Bending moments
             if not hinge1
             else 0,
             ux=element.element_displacement_vector[0],
@@ -180,7 +180,10 @@ class ElementLevel:
 
     @staticmethod
     def determine_bending_moment(element: "Element", con: int):
-        dT = -(element.node_2.Ty + element.node_1.Ty)  # T2 - (-T1)
+        """
+        Cálculo del momento flector - Curva cúbica
+        """
+        dT = (element.node_2.Ty + element.node_1.Ty)  # T2 - (-T1)
 
         iteration_factor = np.linspace(0, 1, con)
         x = iteration_factor * element.l

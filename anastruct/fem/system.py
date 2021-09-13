@@ -593,7 +593,7 @@ class SystemElements:
     ):
 
         """
-        Compute the results of current model.
+        Resuelve la estructura.
 
         :param force_linear: Force a linear calculation. Even when the system has non linear nodes.
         :param verbosity: 0. Log calculation outputs. 1. silence.
@@ -657,7 +657,7 @@ class SystemElements:
 
         system_components.assembly.process_conditions(self)
 
-        # solution of the reduced system (reduced due to support conditions)
+        # Resolver el problema estático Ku=f
         reduced_displacement_vector = np.linalg.solve(
             self.reduced_system_matrix, self.reduced_force_vector
         )
@@ -676,11 +676,11 @@ class SystemElements:
             index_node_1 = (el.node_1.id - 1) * 3
             index_node_2 = (el.node_2.id - 1) * 3
 
-            # node 1 ux, uz, phi
+            # node 1 ux, uz, phi (3 grados de libertad)
             el.element_displacement_vector[:3] = self.system_displacement_vector[
                 index_node_1 : index_node_1 + 3
             ]
-            # node 2 ux, uz, phi
+            # node 2 ux, uz, phi (3 grados de libertad)
             el.element_displacement_vector[3:] = self.system_displacement_vector[
                 index_node_2 : index_node_2 + 3
             ]
@@ -1063,7 +1063,7 @@ class SystemElements:
         values_only: bool = False,
     ):
         """
-        Plot the bending moment.
+        Mostrar el diagrama de momentos flectores.
 
         :param factor: Influence the plotting scale.
         :param verbosity:  0: All information, 1: Suppress information.
