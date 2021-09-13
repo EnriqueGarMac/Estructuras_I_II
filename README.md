@@ -1,9 +1,8 @@
 # Calculador de Estructuras Planas
-![tests and fmt](https://github.com/ritchie46/anaStruct/workflows/tests%20and%20fmt/badge.svg)
-[![Documentation Status](https://readthedocs.org/projects/anastruct/badge/?version=latest)](http://anastruct.readthedocs.io/en/latest/?badge=latest)
-[![Gitter](https://badges.gitter.im/anaStruct/lobby.svg)](https://gitter.im/anaStruct/lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-Analyse 2D Frames and trusses for slender structures. Determine the bending moments, shear forces, axial forces and displacements.
+Código de elementos finitos para el cálculo de pórticos planos y celosías. 
+Código adaptado del paquete anaStruct (https://github.com/ritchie46/anaStruct) para las prácticas 
+de la asignatura Estructuras I del grado de Edificación de la Universidad de Granada UGR
 
 ## Installation
 
