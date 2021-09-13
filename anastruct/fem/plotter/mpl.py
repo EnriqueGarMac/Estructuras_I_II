@@ -769,8 +769,8 @@ class Plotter(PlottingValues):
                 # If True there is no bending moment and no shear, thus no shear force, so no need for plotting.
                 continue
             axis_values = plot_values_shear_force(el, factor)
-            shear_1 = el.shear_force[0]
-            shear_2 = el.shear_force[-1]
+            shear_1 = -el.shear_force[0]
+            shear_2 = -el.shear_force[-1]
 
             self.plot_result(
                 axis_values, shear_1, shear_2, node_results=not bool(verbosity)

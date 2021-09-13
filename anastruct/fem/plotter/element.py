@@ -82,7 +82,8 @@ def plot_values_bending_moment(element, factor, n):
     x_val = np.insert(x_val, 0, element.vertex_1.x)
     y_val = np.insert(y_val, 0, -element.vertex_1.z)
 
-    return x_val, y_val
+    # Le cambio el signo para que coincida con el criterio de signos explicado en clase
+    return x_val, -y_val
 
 
 def plot_values_axial_force(element, factor, n):
@@ -135,7 +136,7 @@ def plot_values_shear_force(element, factor):
     y1 = -element.vertex_1.z
     x2 = element.vertex_2.x
     y2 = -element.vertex_2.z
-    shear_1 = -element.shear_force[0] 
+    shear_1 = -element.shear_force[0]
     shear_2 = -element.shear_force[-1]
     n = len(element.shear_force)
 
@@ -150,8 +151,8 @@ def plot_values_shear_force(element, factor):
     sin = math.sin(-element.angle)
     cos = math.cos(-element.angle)
 
-    x_val += sin * element.shear_force * factor
-    y_val += cos * element.shear_force * factor
+    x_val += -sin * element.shear_force * factor
+    y_val += -cos * element.shear_force * factor
 
     x_val = np.append(x_val, element.vertex_2.x)
     y_val = np.append(y_val, -element.vertex_2.z)

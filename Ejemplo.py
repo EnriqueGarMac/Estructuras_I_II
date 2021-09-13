@@ -24,8 +24,11 @@ ss.add_support_roll(node_id=3, direction=2)
 # Añadimos carga puntual al nodo 2
 ss.point_load(2, Fx=P, rotation=-90)
 
-# Mostramos estructura generada
-ss.show_structure()
+# Resolvemos la estructura
+ss.solve()
 
 # Mostramos cortantes
-ss.show_shear_force()
+#ss.show_shear_force()
+
+# Mostramos flectores
+ss.show_bending_moment()
