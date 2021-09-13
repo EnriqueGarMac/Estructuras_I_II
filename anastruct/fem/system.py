@@ -1117,7 +1117,7 @@ class SystemElements:
         values_only: bool = False,
     ):
         """
-        Plot the shear force.
+        Representar el diagrama de esfuerzos flectores.
 
         :param factor: Influence the plotting scale.
         :param verbosity:  0: All information, 1: Suppress information.
