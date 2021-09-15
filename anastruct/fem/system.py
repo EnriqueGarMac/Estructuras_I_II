@@ -671,6 +671,9 @@ class SystemElements:
             reduced_displacement_vector,
         )
 
+        # Cambio el signo de los desplazamientos en x
+        self.system_displacement_vector[0:len(self.system_displacement_vector):3]*=-1
+        
         # determine the displacement vector of the elements
         for el in self.element_map.values():
             index_node_1 = (el.node_1.id - 1) * 3
@@ -680,11 +683,13 @@ class SystemElements:
             el.element_displacement_vector[:3] = self.system_displacement_vector[
                 index_node_1 : index_node_1 + 3
             ]
+
             # node 2 ux, uz, phi (3 grados de libertad)
             el.element_displacement_vector[3:] = self.system_displacement_vector[
                 index_node_2 : index_node_2 + 3
             ]
             el.determine_force_vector()  # K*u - Esfuerzos
+            
 
         if not naked:
             # determining the node results in post processing class
@@ -997,9 +1002,10 @@ class SystemElements:
             )
             cos = math.cos(math.radians(rotation[i]))
             sin = math.sin(math.radians(rotation[i]))
+            # Le cambio el sentido a Fy y Fx para que coincida con el criterio de clase
             self.loads_point[id_] = (
-                (Fx[i] * cos + Fy[i] * sin) * self.load_factor,
-                (Fy[i] * self.orientation_cs * cos + Fx[i] * sin) * self.load_factor,
+                (-Fx[i] * cos + Fy[i] * sin) * self.load_factor,
+                (-Fy[i] * self.orientation_cs * cos + +Fx[i] * sin) * self.load_factor,
             )
 
     def moment_load(
@@ -1031,6 +1037,7 @@ class SystemElements:
         supports: bool = True,
         values_only: bool = False,
         annotations: bool = False,
+        title: str = '',
     ):
         """
         Plot the structure.
@@ -1044,12 +1051,13 @@ class SystemElements:
         :param values_only: Return the values that would be plotted as tuple containing two arrays: (x, y)
         :param annotations: if True, structure annotations are plotted. It includes section name.
                                       Note: only works when verbosity is equal to 0.
+        :param title: Title of the graph
         """
         figsize = self.figsize if figsize is None else figsize
         if values_only:
             return self.plot_values.structure()
         return self.plotter.plot_structure(
-            figsize, verbosity, show, supports, scale, offset, annotations=annotations
+            figsize, verbosity, show, supports, scale, offset, annotations=annotations, title=title,
         )
 
     def show_bending_moment(

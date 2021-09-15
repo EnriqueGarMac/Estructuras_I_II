@@ -13,7 +13,22 @@ from anastruct.fem.plotter.values import (
     plot_values_shear_force,
 )
 
-PATCH_SIZE = 0.03
+from typing import (
+    Tuple,
+    Union,
+    List,
+    Optional,
+    Dict,
+    Set,
+    TYPE_CHECKING,
+    Sequence,
+    cast,
+    Collection,
+    Any,
+)
+
+
+PATCH_SIZE = 0.05
 
 
 class Plotter(PlottingValues):
@@ -41,7 +56,17 @@ class Plotter(PlottingValues):
                 (node.vertex.x - width * 0.5, -node.vertex.z - width * 0.5),
                 width,
                 height,
-                color="r",
+                color='mistyrose',
+                zorder=9,
+            )
+            self.one_fig.add_patch(support_patch)
+        for node in self.system.supports_fixed:
+            support_patch = mpatches.Rectangle(
+                (node.vertex.x - width * 0.5, -node.vertex.z - width * 0.5),
+                width,
+                height,
+                linewidth=0, fill=0,
+                hatch='//////',
                 zorder=9,
             )
             self.one_fig.add_patch(support_patch)
@@ -56,7 +81,15 @@ class Plotter(PlottingValues):
                 (node.vertex.x, node.vertex.y - radius),
                 numVertices=3,
                 radius=radius,
-                color="r",
+                color="green",
+                zorder=9,
+            )
+            self.one_fig.add_patch(support_patch)
+        for node in self.system.supports_hinged:
+            support_patch = mpatches.Circle(
+                (node.vertex.x, node.vertex.y - radius),
+                radius=radius/3,
+                color="white",
                 zorder=9,
             )
             self.one_fig.add_patch(support_patch)
@@ -129,7 +162,11 @@ class Plotter(PlottingValues):
                     color="r",
                     zorder=9,
                 )
+                circle1 = mpatches.Circle((node.vertex.x-0.5*radius,-node.vertex.z-1.75*radius), radius=radius/4.,color="k")
+                circle2 = mpatches.Circle((node.vertex.x+0.5*radius,-node.vertex.z-1.75*radius), radius=radius/4.,color="k")
                 self.one_fig.add_patch(support_patch)
+                self.one_fig.add_patch(circle1)
+                self.one_fig.add_patch(circle2)
                 y = -node.vertex.z - 2 * radius
                 self.one_fig.plot(
                     [node.vertex.x - radius, node.vertex.x + radius], [y, y], color="r"
@@ -269,10 +306,14 @@ class Plotter(PlottingValues):
                 len_x2 = np.sin(ai - np.pi) * 0.6 * h2 * direction
                 len_y1 = np.cos(ai - np.pi) * 0.6 * h1 * direction
                 len_y2 = np.cos(ai - np.pi) * 0.6 * h2 * direction
+                len_y1_c = -np.cos(ai - np.pi) * 0.6 * h1 * direction
+                len_y2_c = -np.cos(ai - np.pi) * 0.6 * h2 * direction
                 step_x = np.linspace(xn1, xn2, 11)
                 step_y = np.linspace(yn1, yn2, 11)
+                step_y_c = np.linspace(y1, y2, 11)
                 step_len_x = np.linspace(len_x1, len_x2, 11)
                 step_len_y = np.linspace(len_y1, len_y2, 11)
+                step_len_y_c = np.linspace(len_y1_c, len_y2_c, 11)
                 average_h = (h1 + h2) / 2
                 # fc = face color, ec = edge color
                 self.one_fig.text(xn1, yn1, f"q={qi}", color="b", fontsize=9, zorder=10)
@@ -297,9 +338,9 @@ class Plotter(PlottingValues):
 
                     self.one_fig.arrow(
                         step_x[counter],
-                        step_y[counter],
+                        step_y_c[counter],
                         step_len_x[counter],
-                        step_len_y[counter],
+                        step_len_y_c[counter],
                         head_width=average_h * 0.25,
                         head_length=0.4
                         * np.sqrt(step_len_y[counter] ** 2 + step_len_x[counter] ** 2),
@@ -323,8 +364,8 @@ class Plotter(PlottingValues):
             else:
                 direction = -1
 
-            h1 = 0.05 * max_val * abs(qi) / self.max_q
-            h2 = 0.05 * max_val * abs(q) / self.max_q
+            h1 = 0.3 * max_val * abs(qi) / self.max_q
+            h2 = 0.3 * max_val * abs(q) / self.max_q
 
             ai = np.pi / 2 - el.q_angle
             el_angle = el.angle
@@ -344,8 +385,8 @@ class Plotter(PlottingValues):
                 else:
                     direction = -1
 
-                h1 = 0.05 * max_val * abs(qi) / self.max_q
-                h2 = 0.05 * max_val * abs(q) / self.max_q
+                h1 = 0.3 * max_val * abs(qi) / self.max_q
+                h2 = 0.3 * max_val * abs(q) / self.max_q
 
                 ai = -el.q_angle
                 el_angle = el.angle
@@ -363,7 +404,7 @@ class Plotter(PlottingValues):
 
         F = (Fx ** 2 + Fz ** 2) ** 0.5
         len_x = Fx / F * h
-        len_y = -Fz / F * h
+        len_y = Fz / F * h
         x = node.vertex.x - len_x * 1.2
         y = node.vertex.y - len_y * 1.2
 
@@ -376,9 +417,12 @@ class Plotter(PlottingValues):
 
         for k in self.system.loads_point:
             Fx, Fz = self.system.loads_point[k]
+            # Le cambio el signo para que coincida con el criterio de clase
+            Fx = -Fx;
             F = (Fx ** 2 + Fz ** 2) ** 0.5
             node = self.system.node_map[k]
             h = 0.1 * max_plot_range * F / self.max_system_point_load
+
             x, y, len_x, len_y, F = self.__arrow_patch_values(Fx, Fz, node, h)
 
             self.one_fig.arrow(
@@ -401,7 +445,8 @@ class Plotter(PlottingValues):
         for k, v in self.system.loads_moment.items():
 
             node = self.system.node_map[k]
-            if v > 0:
+            # Le doy la vuelta para que el criterio de signos se adapte a lo explicado en clase
+            if v < 0:
                 self.one_fig.plot(
                     node.vertex.x,
                     -node.vertex.z,
@@ -420,7 +465,7 @@ class Plotter(PlottingValues):
             self.one_fig.text(
                 node.vertex.x + h * 0.2,
                 -node.vertex.z + h * 0.2,
-                "T=%d" % v,
+                "T=%d" % -v,
                 color="k",
                 fontsize=9,
                 zorder=10,
@@ -436,8 +481,10 @@ class Plotter(PlottingValues):
         offset=(0, 0),
         gridplot=False,
         annotations=True,
+        title: str = '',
     ):
         """
+        Representar la estructura
         :param show: (boolean) if True, plt.figure will plot.
         :param supports: (boolean) if True, supports are plotted.
         :param annotations: (boolean) if True, structure annotations are plotted. It includes section name.
@@ -464,6 +511,7 @@ class Plotter(PlottingValues):
         minyrange = center_y - ax_range * figsize[1] / figsize[0]
 
         self.one_fig.axis([minxrange, plusxrange, minyrange, plusyrange])
+        plt.title(title)
 
         for el in self.system.element_map.values():
             x_val, y_val = plot_values_element(el)
@@ -583,6 +631,7 @@ class Plotter(PlottingValues):
             self._add_node_values(x_val, y_val, force_1, force_2, digits)
 
     def plot(self):
+        plt.axis('equal')
         plt.show()
 
     def axial_force(
@@ -624,8 +673,8 @@ class Plotter(PlottingValues):
                 color = 1 if el.N_1 < 0 else 0
                 self.plot_result(
                     axis_values,
-                    el.N_1,
-                    el.N_2,
+                    -el.N_1, # Pongo signo menos para que escriba la etiqueta según el criterio de clase
+                    -el.N_2, # Pongo signo menos para que escriba la etiqueta según el criterio de clase
                     node_results=not bool(verbosity),
                     color=color,
                 )
@@ -637,12 +686,12 @@ class Plotter(PlottingValues):
                         radius=0.5 * el.N_1 * factor,
                         inverse_z_axis=True,
                     )
-
+                    # cambio signos para que se ajuste a nuestro criterio
                     if verbosity == 0:
                         self.one_fig.text(
                             point.x,
                             point.y,
-                            "-",
+                            "+",
                             ha="center",
                             va="center",
                             fontsize=20,
@@ -654,12 +703,12 @@ class Plotter(PlottingValues):
                         radius=0.5 * el.N_1 * factor,
                         inverse_z_axis=True,
                     )
-
+                    # cambio signos para que se ajuste a nuestro criterio
                     if verbosity == 0:
                         self.one_fig.text(
                             point.x,
                             point.y,
-                            "+",
+                            "-",
                             ha="center",
                             va="center",
                             fontsize=14,
@@ -769,8 +818,13 @@ class Plotter(PlottingValues):
                 # If True there is no bending moment and no shear, thus no shear force, so no need for plotting.
                 continue
             axis_values = plot_values_shear_force(el, factor)
-            shear_1 = -el.shear_force[0]
-            shear_2 = -el.shear_force[-1]
+            # Le cambio el signo para que coincida con lo explicado en clase
+            shear_1 = el.shear_force[0]
+            shear_2 = el.shear_force[-1]
+            if abs(shear_1)<1e-9:
+                shear_1 = 0.
+            if abs(shear_2)<1e-9:
+                shear_2 = 0.
 
             self.plot_result(
                 axis_values, shear_1, shear_2, node_results=not bool(verbosity)
@@ -792,7 +846,8 @@ class Plotter(PlottingValues):
                 self.system.reaction_forces.values(),
             )
         )
-
+        print('Reacciones')
+        print('***************************')
         for node in self.system.reaction_forces.values():
             if not math.isclose(node.Fx, 0, rel_tol=1e-5, abs_tol=1e-9):
                 # x direction
@@ -802,6 +857,9 @@ class Plotter(PlottingValues):
                 y = sol[1]
                 len_x = sol[2]
                 len_y = sol[3]
+                
+                print('*Nodo: ',node.id)
+                print('Reacción Fx: ',node.Fx)
 
                 self.one_fig.arrow(
                     x,
@@ -833,6 +891,9 @@ class Plotter(PlottingValues):
                 y = sol[1]
                 len_x = sol[2]
                 len_y = sol[3]
+                
+                print('*Nodo: ',node.id)
+                print('Reacción Fy: ',node.Fz)
 
                 self.one_fig.arrow(
                     x,
@@ -856,11 +917,16 @@ class Plotter(PlottingValues):
                         zorder=10,
                     )
 
+            # Le cambio el signo para que coincida con nuestro criterio
             if not math.isclose(node.Ty, 0, rel_tol=1e-5, abs_tol=1e-9):
                 """
                 '$...$': render the strings using mathtext
                 """
-                if node.Ty > 0:
+                
+                print('*Nodo: ',node.id)
+                print('Momento Mz: ',-node.Ty)
+                
+                if node.Ty < 0:
                     self.one_fig.plot(
                         node.vertex.x,
                         -node.vertex.z,
@@ -868,7 +934,7 @@ class Plotter(PlottingValues):
                         ms=25,
                         color="orange",
                     )
-                if node.Ty < 0:
+                if node.Ty > 0:
                     self.one_fig.plot(
                         node.vertex.x,
                         -node.vertex.z,
@@ -881,7 +947,7 @@ class Plotter(PlottingValues):
                     self.one_fig.text(
                         node.vertex.x + h * 0.2,
                         -node.vertex.z + h * 0.2,
-                        "T=%s" % round(node.Ty, 2),
+                        "T=%s" % round(-node.Ty, 2),
                         color="k",
                         fontsize=9,
                         zorder=10,
@@ -890,6 +956,7 @@ class Plotter(PlottingValues):
             self.plot()
         else:
             return self.fig
+        print('-------------------------------------------')
 
     def displacements(
         self,
@@ -908,18 +975,24 @@ class Plotter(PlottingValues):
             max_displacement = max(
                 map(
                     lambda el: max(
-                        abs(el.node_1.ux), abs(el.node_1.uz), el.max_deflection
+                        abs(el.node_1.ux), abs(el.node_1.uz),abs(el.node_2.ux), abs(el.node_2.uz), el.max_deflection
                     )
                     if el.type == "general"
                     else 0,
                     self.system.element_map.values(),
                 )
             )
+            if max_displacement == 0:
+             xdisp = self.system.system_displacement_vector[0::3]
+             ydisp = self.system.system_displacement_vector[1::3]
+             zdisp = self.system.system_displacement_vector[2::3]
+             max_displacement = max(np.sqrt(xdisp*2+ydisp**2+zdisp**2))
             factor = det_scaling_factor(max_displacement, self.max_val_structure)
 
         for el in self.system.element_map.values():
             axis_values = plot_values_deflection(el, factor, linear)
-            self.plot_result(axis_values, node_results=False, fill_polygon=False)
+            # Pongo 5 digitos para llegar hasta la centésima de milímetro
+            self.plot_result(axis_values, node_results=False, fill_polygon=False, digits=4)
 
             if el.type == "general":
                 # index of the max deflection
@@ -944,9 +1017,16 @@ class Plotter(PlottingValues):
         else:
             return self.fig
 
-    def results_plot(self, figsize, verbosity, scale, offset, show):
+    def results_plot(
+        self,
+        verbosity: int = 0,
+        scale: float = 1,
+        figsize: Tuple[float, float] = (16,11),
+        offset: Tuple[float, float] = (0, 0),
+        show: bool = True,
+    ):
         """
-        Aggregate all the plots in one grid plot.
+        Juntar todos los gráficos en uno
 
         :param figsize: (tpl)
         :param verbosity: (int)
@@ -959,26 +1039,25 @@ class Plotter(PlottingValues):
         self.fig = plt.figure(figsize=figsize)
         a = 320
         self.one_fig = self.fig.add_subplot(a + 1)
-        plt.title("structure")
         self.plot_structure(
             figsize, verbosity, show=False, scale=scale, offset=offset, gridplot=True
         )
+        self.one_fig.title.set_text("Estructura")
         self.one_fig = self.fig.add_subplot(a + 2)
-        plt.title("bending moment")
         self.bending_moment(None, figsize, verbosity, scale, offset, False, True)
+        self.one_fig.title.set_text("Momentos flectores")
         self.one_fig = self.fig.add_subplot(a + 3)
-        plt.title("shear force")
         self.shear_force(None, figsize, verbosity, scale, offset, False, True)
+        self.one_fig.title.set_text("Cortantes")
         self.one_fig = self.fig.add_subplot(a + 4)
-        plt.title("axial force")
         self.axial_force(None, figsize, verbosity, scale, offset, False, True)
+        self.one_fig.title.set_text("Axiles")
         self.one_fig = self.fig.add_subplot(a + 5)
-        plt.title("displacements")
         self.displacements(None, figsize, verbosity, scale, offset, False, False, True)
+        self.one_fig.title.set_text("Desplazamientos")
         self.one_fig = self.fig.add_subplot(a + 6)
-        plt.title("reaction force")
         self.reaction_force(figsize, verbosity, scale, offset, False, True)
-
+        self.one_fig.title.set_text("Reacciones")
         if show:
             self.plot()
         else:

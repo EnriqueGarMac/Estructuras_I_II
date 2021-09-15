@@ -148,9 +148,13 @@ class Element:
         """
         Calcular esfuerzos en extremos de las vigas
         """
+        # Cambio el signo de los desplazamientos para ajustarme al criterio de signos de anastruct
+        self.element_displacement_vector[0:len(self.element_displacement_vector):3]*=-1
         self.element_force_vector = np.dot(
             self.stiffness_matrix, self.element_displacement_vector
         )
+        # Vuelvo a cambiar el signo
+        self.element_displacement_vector[0:len(self.element_displacement_vector):3]*=-1
         return self.element_force_vector
 
     def compile_stiffness_matrix(self):

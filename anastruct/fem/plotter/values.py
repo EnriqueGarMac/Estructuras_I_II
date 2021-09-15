@@ -10,10 +10,13 @@ import math
 
 
 def det_scaling_factor(max_unit, max_val_structure):
-    if math.isclose(max_unit, 0):
+
+    if max_unit<1.0e-12:
+        return 0
+    elif math.isclose(max_unit, 0):
         return 0.1
     else:
-        return 0.15 * max_val_structure / max_unit
+        return 0.1 * max_val_structure / max_unit
 
 
 class PlottingValues:
@@ -26,7 +29,7 @@ class PlottingValues:
     @property
     def max_val_structure(self):
         """
-        Determine the maximum value of the structures dimensions.
+        Determinar la mayor dimensión de nuestra estructura
         :return: (flt)
         """
         if self._max_val_structure is None:
@@ -38,6 +41,7 @@ class PlottingValues:
                     self.system.element_map.values(),
                 )
             )
+            #min(self.one_fig.axes.get_ylim())
         return self._max_val_structure
 
     def displacements(self, factor, linear):
@@ -47,6 +51,18 @@ class PlottingValues:
                 map(
                     lambda el: max(
                         abs(el.node_1.ux), abs(el.node_1.uz), el.max_deflection
+                    )
+                    if el.type == "general"
+                    else 0,
+                    self.system.element_map.values(),
+                )
+            )
+            print(max_displacement)
+            if max_displacement==0:
+             max_displacement = max(
+                map(
+                    lambda el: max(
+                        abs(el.node_1.ux), abs(el.node_1.uz)
                     )
                     if el.type == "general"
                     else 0,

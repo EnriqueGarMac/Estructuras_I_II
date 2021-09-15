@@ -11,10 +11,11 @@ def plot_values_deflection(element, factor, linear=False):
     :param linear: (bool) If True, the bending in between the elements is determined.
     :return: (np.array/ list) x and y values.
     """
+    # Le he cambiado los signos para que coincida con el criterio explicado en clase
     ux1 = element.node_1.ux * factor
-    uz1 = -element.node_1.uz * factor
+    uz1 = element.node_1.uz * factor
     ux2 = element.node_2.ux * factor
-    uz2 = -element.node_2.uz * factor
+    uz2 = element.node_2.uz * factor
 
     x1 = element.vertex_1.x + ux1
     y1 = -element.vertex_1.z + uz1
@@ -27,6 +28,7 @@ def plot_values_deflection(element, factor, linear=False):
         y_val = np.linspace(y1, y2, n)
 
         x_val = x_val + element.deflection * math.sin(element.angle) * factor
+        # Le he cambiado el signo a y_val para que coincida con el criterio explicado en clase
         y_val = y_val + element.deflection * -math.cos(element.angle) * factor
 
     else:  # truss element has no bending
@@ -83,7 +85,7 @@ def plot_values_bending_moment(element, factor, n):
     y_val = np.insert(y_val, 0, -element.vertex_1.z)
 
     # Le cambio el signo para que coincida con el criterio de signos explicado en clase
-    return x_val, -y_val
+    return x_val, y_val
 
 
 def plot_values_axial_force(element, factor, n):
@@ -136,8 +138,14 @@ def plot_values_shear_force(element, factor):
     y1 = -element.vertex_1.z
     x2 = element.vertex_2.x
     y2 = -element.vertex_2.z
-    shear_1 = -element.shear_force[0]
-    shear_2 = -element.shear_force[-1]
+    # Le cambio el signo para que coincida con el criterio explicado en clase
+    shear_1 = element.shear_force[0]
+    shear_2 = element.shear_force[-1]
+    if shear_1<1e-9:
+       shear_1 = 0.
+    if shear_2<1e-9:
+       shear_2 = 0.
+       
     n = len(element.shear_force)
 
     # apply angle ai
@@ -150,9 +158,9 @@ def plot_values_shear_force(element, factor):
 
     sin = math.sin(-element.angle)
     cos = math.cos(-element.angle)
-
-    x_val += -sin * element.shear_force * factor
-    y_val += -cos * element.shear_force * factor
+    # Le cambio el signo para que coincida con el criterio explicado en clase
+    x_val += sin * element.shear_force * factor
+    y_val += cos * element.shear_force * factor
 
     x_val = np.append(x_val, element.vertex_2.x)
     y_val = np.append(y_val, -element.vertex_2.z)
