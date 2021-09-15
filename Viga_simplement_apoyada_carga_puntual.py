@@ -13,9 +13,9 @@ L = 3.0  # Longitud de la barra
 P = -10.0 # Carga puntual
 
 # Añadimos elemento barra 1
-ss.add_element(location=[[0, 0], [L/2.0, 0]])
+ss.add_element(location=[[0, 0], [L/2.0, 0]]);
 # Añadimos elemento barra 2
-ss.add_element(location=[[L/2.0, 0], [L, 0]])
+ss.add_element(location=[[L/2.0, 0], [L, 0]]);
 
 # Añadimos apoyo fijo al nodo 1
 ss.add_support_hinged(node_id=1)

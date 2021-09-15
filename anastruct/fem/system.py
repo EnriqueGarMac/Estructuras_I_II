@@ -370,7 +370,7 @@ class SystemElements:
             self.non_linear = True
         system_components.assembly.dead_load(self, g, element.id)
 
-        #return self.count
+        return self.count
 
     def add_multiple_elements(
         self,
