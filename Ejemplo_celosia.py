@@ -88,7 +88,7 @@ ss.solve()
 # ss.show_bending_moment()
 
 # Mostramos axiles
-#ss.show_axial_force()
+ss.show_axial_force()
 
 # Mostramos deformada
 ss.show_displacement()
