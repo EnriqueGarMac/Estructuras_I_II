@@ -308,6 +308,8 @@ class Plotter(PlottingValues):
                 len_y2 = np.cos(ai - np.pi) * 0.6 * h2 * direction
                 len_y1_c = -np.cos(ai - np.pi) * 0.6 * h1 * direction
                 len_y2_c = -np.cos(ai - np.pi) * 0.6 * h2 * direction
+                step_xb = np.linspace(x1, x2, 11)
+                step_yb = np.linspace(y1, y2, 11)
                 step_x = np.linspace(xn1, xn2, 11)
                 step_y = np.linspace(yn1, yn2, 11)
                 step_y_c = np.linspace(y1, y2, 11)
@@ -337,16 +339,17 @@ class Plotter(PlottingValues):
                             shape = "full"
 
                     self.one_fig.arrow(
-                        step_x[counter],
-                        step_y_c[counter],
-                        step_len_x[counter],
-                        step_len_y_c[counter],
-                        head_width=average_h * 0.25,
-                        head_length=0.4
+                        step_xb[counter],
+                        step_yb[counter],
+                        step_x[counter]-step_xb[counter],
+                        step_y[counter]-step_yb[counter],
+                        head_width=average_h * 0.05,
+                        head_length=average_h * 0.1
                         * np.sqrt(step_len_y[counter] ** 2 + step_len_x[counter] ** 2),
                         ec="k",
                         fc="k",
                         shape=shape,
+                        length_includes_head=True,
                     )
 
         for q_id in self.system.loads_q.keys():
