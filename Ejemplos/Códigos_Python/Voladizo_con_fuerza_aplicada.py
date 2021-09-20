@@ -24,7 +24,7 @@ ss.add_support_fixed(node_id=1)
 ss.point_load(2, Fx=0, Fy=-P)
 
 # Mostramos estructura generada
-ss.show_structure(title='Viga simplemente apoyada')
+ss.show_structure(title='Voladizo con fuerza puntual')
 
 # Resolvemos la estructura
 ss.solve()

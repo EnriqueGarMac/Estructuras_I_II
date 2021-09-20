@@ -25,7 +25,7 @@ ss.add_support_roll(node_id=2, direction=2)
 ss.q_load(element_id=1, q=q)
 
 # Mostramos estructura generada
-ss.show_structure(title='Viga simplemente apoyada')
+ss.show_structure(title='Viga simplemente apoyada con carga distribuida')
 
 # Resolvemos la estructura
 ss.solve()

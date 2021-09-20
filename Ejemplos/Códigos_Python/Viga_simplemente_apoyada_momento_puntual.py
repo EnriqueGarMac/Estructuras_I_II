@@ -26,7 +26,7 @@ ss.add_support_roll(node_id=3, direction=2)
 ss.moment_load(2, Ty=M)
 
 # Mostramos estructura generada
-ss.show_structure(title='Viga simplemente apoyada')
+ss.show_structure(title='Viga simplemente apoyada momento puntual')
 
 # Resolvemos la estructura
 ss.solve()

@@ -24,7 +24,7 @@ ss.add_support_fixed(node_id=1)
 ss.q_load(element_id=1, q=q)
 
 # Mostramos estructura generada
-ss.show_structure(title='Viga simplemente apoyada')
+ss.show_structure(title='Voladizo con carga uniforme')
 
 # Resolvemos la estructura
 ss.solve()
