@@ -10,7 +10,7 @@ from anastruct import SystemElements
 ss = SystemElements()
 
 L = 3.0  # Longitud de la barra
-P = -10.0 # Carga puntual
+P = 10.0 # Carga puntual
 
 # Añadimos elemento barra 1
 ss.add_element(location=[[0, 0], [L/2.0, 0]]);
@@ -23,7 +23,7 @@ ss.add_support_hinged(node_id=1)
 ss.add_support_roll(node_id=3, direction=2)
 
 # Añadimos carga puntual al nodo 2
-ss.point_load(2, Fx=0, Fy=P)
+ss.point_load(2, Fx=0, Fy=-P)
 
 # Mostramos estructura generada
 ss.show_structure(title='Viga simplemente apoyada')

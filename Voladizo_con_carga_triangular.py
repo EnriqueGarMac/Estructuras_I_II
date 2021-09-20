@@ -21,7 +21,7 @@ ss.add_element(location=[[0, 0], [L*np.cos(ang_giro*np.pi/180.), L*np.sin(ang_gi
 ss.add_support_fixed(node_id=1)
 
 # Añadimos carga puntual al nodo 2
-ss.q_load(element_id=1, q=(q,0))
+ss.q_load(element_id=1, q=(q,0), q_perp=(0,0))
 
 # Mostramos estructura generada
 ss.show_structure(title='Viga simplemente apoyada')
@@ -30,7 +30,7 @@ ss.show_structure(title='Viga simplemente apoyada')
 ss.solve()
 
 # Mostramos las reacciones
-#ss.show_reaction_force()
+ss.show_reaction_force()
 
 # Mostramos cortantes
 #ss.show_shear_force()

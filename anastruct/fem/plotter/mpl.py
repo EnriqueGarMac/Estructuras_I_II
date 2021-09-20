@@ -377,7 +377,7 @@ class Plotter(PlottingValues):
             if el.q_perp_load[0] != 0 or el.q_perp_load[1] != 0:
                 qi = el.q_perp_load[0]
                 q = el.q_perp_load[1]
-
+                ai = el.q_angle
                 x1 = el.vertex_1.x + np.sin(ai) * h1 * direction * 2
                 y1 = el.vertex_1.y + np.cos(ai) * h1 * direction * 2
                 x2 = el.vertex_2.x + np.sin(ai) * h2 * direction * 2
@@ -406,10 +406,11 @@ class Plotter(PlottingValues):
         """
 
         F = (Fx ** 2 + Fz ** 2) ** 0.5
-        len_x = Fx / F * h
-        len_y = Fz / F * h
-        x = node.vertex.x - len_x * 1.2
-        y = node.vertex.y - len_y * 1.2
+        print(Fx)
+        len_x = 1.2*Fx / F * h
+        len_y = 1.2*Fz / F * h
+        x = node.vertex.x
+        y = node.vertex.y
 
         return x, y, len_x, len_y, F
 
@@ -855,14 +856,14 @@ class Plotter(PlottingValues):
             if not math.isclose(node.Fx, 0, rel_tol=1e-5, abs_tol=1e-9):
                 # x direction
                 scale = abs(node.Fx) / max_force * h
-                sol = self.__arrow_patch_values(node.Fx, 0, node, scale)
+                sol = self.__arrow_patch_values(-node.Fx, 0, node, scale)
                 x = sol[0]
                 y = sol[1]
                 len_x = sol[2]
                 len_y = sol[3]
                 
                 print('*Nodo: ',node.id)
-                print('Reacción Fx: ',node.Fx)
+                print('Reacción Fx: ',-node.Fx)
 
                 self.one_fig.arrow(
                     x,
@@ -880,7 +881,7 @@ class Plotter(PlottingValues):
                     self.one_fig.text(
                         x,
                         y,
-                        "R=%s" % round(node.Fx, 2),
+                        "R=%s" % round(-node.Fx, 2),
                         color="k",
                         fontsize=9,
                         zorder=10,
