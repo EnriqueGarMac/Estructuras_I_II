@@ -318,7 +318,7 @@ class Plotter(PlottingValues):
                 step_len_y_c = np.linspace(len_y1_c, len_y2_c, 11)
                 average_h = (h1 + h2) / 2
                 # fc = face color, ec = edge color
-                self.one_fig.text(xn1, yn1, f"q={np.round(10000*qi)/1000.0}", color="b", fontsize=9, zorder=10)
+                self.one_fig.text(xn1, yn1, f"q={np.round(10000*qi)/10000.0}", color="b", fontsize=9, zorder=10)
                 self.one_fig.text(xn2, yn2, f"q={np.round(10000*q)/10000.0}", color="b", fontsize=9, zorder=10)
 
                 # add multiple arrows to fill load
