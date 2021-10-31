@@ -318,8 +318,8 @@ class Plotter(PlottingValues):
                 step_len_y_c = np.linspace(len_y1_c, len_y2_c, 11)
                 average_h = (h1 + h2) / 2
                 # fc = face color, ec = edge color
-                self.one_fig.text(xn1, yn1, f"q={qi}", color="b", fontsize=9, zorder=10)
-                self.one_fig.text(xn2, yn2, f"q={q}", color="b", fontsize=9, zorder=10)
+                self.one_fig.text(xn1, yn1, f"q={np.round(1000*qi)/1000.0}", color="b", fontsize=9, zorder=10)
+                self.one_fig.text(xn2, yn2, f"q={np.round(1000*q)/1000.0}", color="b", fontsize=9, zorder=10)
 
                 # add multiple arrows to fill load
                 for counter in range(len(step_x)):
@@ -344,8 +344,7 @@ class Plotter(PlottingValues):
                         step_x[counter]-step_xb[counter],
                         step_y[counter]-step_yb[counter],
                         head_width=average_h * 0.05,
-                        head_length=average_h * 0.1
-                        * np.sqrt(step_len_y[counter] ** 2 + step_len_x[counter] ** 2),
+                        head_length=average_h * 0.2,
                         ec="k",
                         fc="k",
                         shape=shape,
