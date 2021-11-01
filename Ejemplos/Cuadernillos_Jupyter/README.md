@@ -14,7 +14,8 @@ A continuación se listan los ejemplos de práctica disponibles
 * Voladizo con fuerza puntual --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Voladizo_con_fuerza_aplicada.ipynb)
 * Voladizo con fuerza puntual desplazada --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Voladizo_con_fuerza_aplicada_desplazada.ipynb)
 * Voladizo con momento puntual --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Voladizo_con_momento_puntual.ipynb)
-* Celosía Warren --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejemplo_celosia.ipynb)
+* Portico Ejercicio 6 relacion --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Portico_plano_ejercicio_6_relacion.ipynb)
+* Celosi�a Warren --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejemplo_celosia.ipynb)
 
 
 
