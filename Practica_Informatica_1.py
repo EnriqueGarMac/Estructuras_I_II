@@ -34,3 +34,6 @@ ss.solve();
 
 # Mostramos flectores
 ss.show_bending_moment()
+
+
+ss.show_reaction_force()

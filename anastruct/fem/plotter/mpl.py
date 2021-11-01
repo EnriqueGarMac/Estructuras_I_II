@@ -405,7 +405,6 @@ class Plotter(PlottingValues):
         """
 
         F = (Fx ** 2 + Fz ** 2) ** 0.5
-        print(Fx)
         len_x = 1.2*Fx / F * h
         len_y = 1.2*Fz / F * h
         x = node.vertex.x
@@ -862,7 +861,7 @@ class Plotter(PlottingValues):
                 len_y = sol[3]
                 
                 print('*Nodo: ',node.id)
-                print('Reacción Fx: ',-node.Fx)
+                print('Reacción Fx: ',-np.round(node.Fx*10000.)/10000.)
 
                 self.one_fig.arrow(
                     x,
@@ -896,7 +895,7 @@ class Plotter(PlottingValues):
                 len_y = sol[3]
                 
                 print('*Nodo: ',node.id)
-                print('Reacción Fy: ',node.Fz)
+                print('Reacción Fy: ',np.round(node.Fz*10000.)/10000.)
 
                 self.one_fig.arrow(
                     x,
@@ -927,7 +926,7 @@ class Plotter(PlottingValues):
                 """
                 
                 print('*Nodo: ',node.id)
-                print('Momento Mz: ',-node.Ty)
+                print('Momento Mz: ',-np.round(node.Ty*10000.)/10000.)
                 
                 if node.Ty < 0:
                     self.one_fig.plot(
