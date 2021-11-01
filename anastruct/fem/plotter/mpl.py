@@ -774,9 +774,9 @@ class Plotter(PlottingValues):
             )
 
             if el.all_qp_load:
-                m_sag = min(el.bending_moment)
+                m_sag = max(abs(el.bending_moment))
                 index = find_nearest(el.bending_moment, m_sag)[1]
-                offset = -self.max_val_structure * 0.05
+                offset = +self.max_val_structure * 0.001
 
                 if verbosity == 0:
                     x = axis_values[0][index] + np.sin(-el.angle) * offset
