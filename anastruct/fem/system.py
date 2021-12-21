@@ -706,6 +706,42 @@ class SystemElements:
             )
 
         return self.system_displacement_vector
+    
+    def printdispl(
+        self,
+        force_linear: bool = False,
+        verbosity: int = 0,
+        max_iter: int = 200,
+        geometrical_non_linear: int = False,
+        **kwargs
+    ):
+
+        """
+        Plottea las deformaciones de los nudos.
+
+        :param force_linear: Force a linear calculation. Even when the system has non linear nodes.
+        :param verbosity: 0. Log calculation outputs. 1. silence.
+        :param max_iter: Maximum allowed iterations.
+        :param geometrical_non_linear: Calculate second order effects and determine the buckling factor.
+        :return: Displacements vector.
+
+
+        Development **kwargs:
+            :param naked: Whether or not to run the solve function without doing post processing.
+            :param discretize_kwargs: When doing a geometric non linear analysis you can reduce or increase the number
+                                      of elements created that are used for determining the buckling_factor
+        """
+
+        du = self.system_displacement_vector[0:-1:3]
+        dy = self.system_displacement_vector[1:-1:3]
+        nodeid = np.arange(1,len(du))
+
+        print(' ')
+        print(' ')
+        print('Nudo -> Despl. x  Despl. y')
+        print('**************************************************')
+        for i in np.arange(0,len(du)-1):
+            print(nodeid[i],' -> ',str(du[i]),' ',str(dy[i]))
 
     def validate(self, min_eigen: float = 1e-9) -> bool:
         """
