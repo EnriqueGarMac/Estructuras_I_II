@@ -880,8 +880,8 @@ class Plotter(PlottingValues):
 
                 if verbosity == 0:
                     self.one_fig.text(
-                        x,
-                        y,
+                        x+len_x+h * 0.15,
+                        y+len_y,
                         "R=%s" % round(-node.Fx, 2),
                         color="k",
                         fontsize=9,
@@ -914,8 +914,8 @@ class Plotter(PlottingValues):
 
                 if verbosity == 0:
                     self.one_fig.text(
-                        x,
-                        y,
+                        x+len_x,
+                        y+len_y-h * 0.15,
                         "R=%s" % round(node.Fz, 2),
                         color="k",
                         fontsize=9,
