@@ -734,13 +734,13 @@ class SystemElements:
 
         du = self.system_displacement_vector[0:-1:3]
         dy = self.system_displacement_vector[1:-1:3]
-        nodeid = np.arange(1,len(du))
+        nodeid = np.arange(1,len(du)+1)
 
         print(' ')
         print(' ')
         print('Nudo -> Despl. x  Despl. y')
         print('**************************************************')
-        for i in np.arange(0,len(du)-1):
+        for i in np.arange(0,len(du)):
             print(nodeid[i],' -> ',str(du[i]),' ',str(dy[i]))
 
     def validate(self, min_eigen: float = 1e-9) -> bool:
@@ -1199,7 +1199,7 @@ class SystemElements:
     def show_displacement(
         self,
         factor: Optional[float] = None,
-        verbosity: int = 0,
+        verbosity: int = 1,
         scale: float = 1,
         offset: Tuple[float, float] = (0, 0),
         figsize: Optional[Tuple[float, float]] = None,

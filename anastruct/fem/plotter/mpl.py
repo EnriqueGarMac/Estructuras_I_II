@@ -83,6 +83,7 @@ class Plotter(PlottingValues):
                 radius=radius,
                 color="green",
                 zorder=9,
+                alpha=0.7,
             )
             self.one_fig.add_patch(support_patch)
         for node in self.system.supports_hinged:
@@ -161,6 +162,7 @@ class Plotter(PlottingValues):
                     radius=radius,
                     color="r",
                     zorder=9,
+                    alpha=0.7
                 )
                 circle1 = mpatches.Circle((node.vertex.x-0.5*radius,-node.vertex.z-1.75*radius), radius=radius/4.,color="k")
                 circle2 = mpatches.Circle((node.vertex.x+0.5*radius,-node.vertex.z-1.75*radius), radius=radius/4.,color="k")
@@ -201,6 +203,7 @@ class Plotter(PlottingValues):
                         color="r",
                         zorder=9,
                         fill=False,
+                        alpha=0.7
                     )
                     self.one_fig.add_patch(rect_patch)
             count += 1
@@ -377,10 +380,10 @@ class Plotter(PlottingValues):
                 qi = el.q_perp_load[0]
                 q = el.q_perp_load[1]
                 ai = el.q_angle
-                x1 = el.vertex_1.x + np.sin(ai) * h1 * direction * 2
-                y1 = el.vertex_1.y + np.cos(ai) * h1 * direction * 2
-                x2 = el.vertex_2.x + np.sin(ai) * h2 * direction * 2
-                y2 = el.vertex_2.y + np.cos(ai) * h2 * direction * 2
+                x1 = el.vertex_1.x + np.sin(ai) * h1 * direction * 0
+                y1 = el.vertex_1.y + np.cos(ai) * h1 * direction * 0
+                x2 = el.vertex_2.x + np.sin(ai) * h2 * direction * 0
+                y2 = el.vertex_2.y + np.cos(ai) * h2 * direction * 0
 
                 if max(qi, q) > 0:
                     direction = 1
@@ -713,7 +716,7 @@ class Plotter(PlottingValues):
                             "-",
                             ha="center",
                             va="center",
-                            fontsize=14,
+                            fontsize=20,
                             color="b",
                         )
 
@@ -988,7 +991,7 @@ class Plotter(PlottingValues):
              xdisp = self.system.system_displacement_vector[0::3]
              ydisp = self.system.system_displacement_vector[1::3]
              zdisp = self.system.system_displacement_vector[2::3]
-             max_displacement = max(np.sqrt(xdisp*2+ydisp**2+zdisp**2))
+             max_displacement = max(np.sqrt(xdisp**2+ydisp**2+zdisp**2))
             factor = det_scaling_factor(max_displacement, self.max_val_structure)
 
         for el in self.system.element_map.values():
