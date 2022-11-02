@@ -49,5 +49,5 @@ ss.moment_load(9, Ty=-5)
 ss.solve();
 
 # Mostramos las reacciones
-ss.show_reaction_force()
+ss.show_reaction_force(figsize=(30,10))
 

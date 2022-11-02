@@ -754,6 +754,7 @@ class Plotter(PlottingValues):
             factor = det_scaling_factor(max_moment, self.max_val_structure)
 
         # determine the axis values
+        cont_elem = 1
         for el in self.system.element_map.values():
             if (
                 math.isclose(el.node_1.Ty, 0, rel_tol=1e-5, abs_tol=1e-9)
@@ -764,14 +765,15 @@ class Plotter(PlottingValues):
                 # If True there is no bending moment, so no need for plotting.
                 continue
             axis_values = plot_values_bending_moment(el, factor, con)
+            axis_values_orig = plot_values_bending_moment(el, 0.0, con)
             if verbosity == 0:
                 node_results = True
             else:
                 node_results = False
             self.plot_result(
                 axis_values,
-                abs(el.node_1.Ty),
-                abs(el.node_2.Ty),
+                el.node_1.Ty,
+                -el.node_2.Ty,
                 node_results=node_results,
             )
 
@@ -780,10 +782,16 @@ class Plotter(PlottingValues):
                 index = find_nearest(el.bending_moment, m_sag)[1]
                 offset = +self.max_val_structure * 0.001
 
-                if verbosity == 0:
+                if m_sag != abs(el.node_1.Ty):
+                 if m_sag != abs(el.node_2.Ty):
+                  if verbosity == 0:
                     x = axis_values[0][index] + np.sin(-el.angle) * offset
                     y = axis_values[1][index] + np.cos(-el.angle) * offset
-                    self.one_fig.text(x, y, "%s" % round(m_sag, 1), fontsize=9)
+                    x_orig = axis_values_orig[0][index]
+                    y_orig = axis_values_orig[1][index]
+                    self.one_fig.text(x, y, "%s" % round(m_sag, 1), fontsize=8, color="r")
+                    print('Local maximum bending moment - Beam: '+str(cont_elem)+' Mmax:'+str(round(m_sag, 1))+'; Position: (x,y) = ('+str(round(x_orig, 3))+','+str(round(y_orig, 3))+')')
+                    cont_elem += 1
         if show:
             self.plot()
         else:
