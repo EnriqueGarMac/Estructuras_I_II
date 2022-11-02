@@ -1,6 +1,8 @@
 # Calculador de Estructuras Planas
 
-![Screenshot](anastruct_Im.png | width=100)
+<div align="center">
+    <img src="anastruct_Im.png" width="400px"</img> 
+</div>
 
 Código de cálculo matricial (direct stiffness) para el cálculo de pórticos planos y celosías. 
 Código adaptado del paquete anaStruct (https://github.com/ritchie46/anaStruct) para las prácticas 
