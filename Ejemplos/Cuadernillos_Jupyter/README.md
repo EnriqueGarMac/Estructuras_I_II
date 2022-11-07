@@ -16,7 +16,7 @@ A continuación se listan los ejemplos de práctica disponibles
 * Voladizo con momento puntual --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Voladizo_con_momento_puntual.ipynb)
 * Ejemplo pórtico con cargas puntuales --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejemplo_portico_cargas_puntuales.ipynb)
 * Pórtico Ejercicio 6 relación --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Portico_plano_ejercicio_6_relacion.ipynb)
-* Pórtico práctica informática 1 - 2022/2023 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Practica_informatica_1_22_23.ipynb)
+* Pórtico práctica informática 1 - 2022/2023 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Practica_informatica_1_22_23.ipynb)
 * Celosía Warren --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejemplo_celosia.ipynb)
 
 
