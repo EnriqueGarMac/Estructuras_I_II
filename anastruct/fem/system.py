@@ -704,7 +704,7 @@ class SystemElements:
                 "Check your support conditions,"
                 "or your elements Young's modulus"
             )
-
+        self.printdispl()
         return self.system_displacement_vector
     
     def printdispl(

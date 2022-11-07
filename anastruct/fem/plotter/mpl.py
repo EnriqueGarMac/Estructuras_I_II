@@ -1015,7 +1015,7 @@ class Plotter(PlottingValues):
                 deflection = ((xd - x) ** 2 + (yd - y) ** 2) ** 0.5
                 index = np.argmax(np.abs(deflection))
 
-                if verbosity == 0:
+                if verbosity == 1:
 
                     if index != 0 or index != el.deflection.size:
                         self._add_element_values(
