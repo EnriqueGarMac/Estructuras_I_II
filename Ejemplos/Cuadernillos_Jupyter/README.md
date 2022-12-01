@@ -18,6 +18,7 @@ A continuación se listan los ejemplos de práctica disponibles
 * Pórtico Ejercicio 1 relación --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Problema_1_relacion_problemas_porticos.ipynb)
 * Pórtico Ejercicio 6 relación --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Portico_plano_ejercicio_6_relacion.ipynb)
 * Pórtico práctica informática 1 - 2022/2023 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Practica_informatica_1_22_23.ipynb)
+* Ejemplo clase potential interno --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejemplo_potential_interno.ipynb)
 * Celosía Warren --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejemplo_celosia.ipynb)
 
 
