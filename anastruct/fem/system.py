@@ -1128,6 +1128,7 @@ class SystemElements:
         self,
         factor: Optional[float] = None,
         verbosity: int = 0,
+        printvalues: int=0,
         scale: float = 1,
         offset: Tuple[float, float] = (0, 0),
         figsize: Optional[Tuple[float, float]] = None,
@@ -1148,7 +1149,7 @@ class SystemElements:
         if values_only:
             return self.plot_values.axial_force(factor)
         figsize = self.figsize if figsize is None else figsize
-        return self.plotter.axial_force(factor, figsize, verbosity, scale, offset, show)
+        return self.plotter.axial_force(printvalues,factor, figsize, verbosity, scale, offset, show)
 
     def show_shear_force(
         self,

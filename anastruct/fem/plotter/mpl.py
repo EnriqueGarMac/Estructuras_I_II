@@ -641,6 +641,7 @@ class Plotter(PlottingValues):
 
     def axial_force(
         self,
+        printvalues = 0,
         factor=None,
         figsize=None,
         verbosity=0,
@@ -676,6 +677,11 @@ class Plotter(PlottingValues):
             else:
                 axis_values = plot_values_axial_force(el, factor, con)
                 color = 1 if el.N_1 < 0 else 0
+                if printvalues==1:
+                  if (el.N_1==el.N_2):
+                       print('Element: ' + str(el.id) + ' N: '+ str(-el.N_1)),
+                  else:
+                       print('Element: ' + str(el.id) + ' N1: '+ str(-el.N_1)+' N2: '+ str(-el.N_2)),
                 self.plot_result(
                     axis_values,
                     -el.N_1, # Pongo signo menos para que escriba la etiqueta según el criterio de clase

@@ -20,6 +20,8 @@ A continuación se listan los ejemplos de práctica disponibles
 * Pórtico práctica informática 1 - 2022/2023 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Practica_informatica_1_22_23.ipynb)
 * Ejemplo clase potential interno --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejemplo_potential_interno.ipynb)
 * Celosía Warren --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejemplo_celosia.ipynb)
+* Ejercicio 3 - relación de celosías --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Ejercicio_3_Rel_celosias.ipynb)
+* Practica informática 2 -- 2022/2023 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Cuadernillos_Jupyter/Practica_informatica_II.ipynb)
 
 
 
