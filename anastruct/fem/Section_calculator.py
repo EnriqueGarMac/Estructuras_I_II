@@ -20,15 +20,29 @@ class Cross_section:
 
     def __init__(
         self,
-        A: float = 0.0,
-        Ix: float = 0.0,
-        Iy: float = 0.0,
+        a: float = 0.0,
+        Ixx: float = 0.0,
+        Iyy: float = 0.0,
+        Ixy: float = 0.0,
+        I1: float = 0.0,
+        I2: float = 0.0,
+        theta: float = 0.0,
         cx: float = 0.0,
         cy: float = 0.0,
+        pts: list = [],
     ):
-    def area(self,pts):
+      self.a = a
+      self.cx = cx
+      self.cy = cy
+      self.Ixx = Ixx
+      self.Iyy = Iyy
+      self.Ixy = Ixy
+      self.I1 = I1
+      self.I2 = I2
+      self.theta = theta
+    def area(self):
       'Area of cross-section.'
-      
+      pts = self.pts
       if pts[0] != pts[-1]:
         pts = pts + pts[:1]
       x = [ c[0] for c in pts ]
@@ -36,19 +50,19 @@ class Cross_section:
       s = 0
       for i in range(len(pts) - 1):
         s += x[i]*y[i+1] - x[i+1]*y[i]
-      self.s = s/2.
+      self.a = s/2.
       return s/2.
 
 
-    def centroid(pts):
+    def centroid(self):
       'Location of centroid.'
-      
+      pts = self.pts
       if pts[0] != pts[-1]:
         pts = pts + pts[:1]
       x = [ c[0] for c in pts ]
       y = [ c[1] for c in pts ]
       sx = sy = 0
-      a = area(pts)
+      a = self.area()
       for i in range(len(pts) - 1):
         sx += (x[i] + x[i+1])*(x[i]*y[i+1] - x[i+1]*y[i])
         sy += (y[i] + y[i+1])*(x[i]*y[i+1] - x[i+1]*y[i])
@@ -57,16 +71,16 @@ class Cross_section:
       return sx/(6*a), sy/(6*a)
 
 
-    def inertia(pts):
+    def inertia(self):
       'Moments and product of inertia about centroid.'
-      
+      pts = self.pts
       if pts[0] != pts[-1]:
         pts = pts + pts[:1]
       x = [ c[0] for c in pts ]
       y = [ c[1] for c in pts ]
       sxx = syy = sxy = 0
-      a = area(pts)
-      cx, cy = centroid(pts)
+      a = self.area()
+      cx, cy = self.centroid()
       for i in range(len(pts) - 1):
         sxx += (y[i]**2 + y[i]*y[i+1] + y[i+1]**2)*(x[i]*y[i+1] - x[i+1]*y[i])
         syy += (x[i]**2 + x[i]*x[i+1] + x[i+1]**2)*(x[i]*y[i+1] - x[i+1]*y[i])
@@ -77,24 +91,38 @@ class Cross_section:
       return sxx/12 - a*cy**2, syy/12 - a*cx**2, sxy/24 - a*cx*cy
 
 
-    def principal(Ixx, Iyy, Ixy):
+    def principal(self):
       'Principal moments of inertia and orientation.'
-      
+      Ixx = self.Ixx
+      Iyy = self.Iyy
+      Ixy = self.Ixy
       avg = (Ixx + Iyy)/2
       diff = (Ixx - Iyy)/2      # signed
       I1 = avg + sqrt(diff**2 + Ixy**2)
       I2 = avg - sqrt(diff**2 + Ixy**2)
       theta = atan2(-Ixy, diff)/2
+      self.I1 = I1
+      self.I2 = I2
+      self.theta = theta
       return I1, I2, theta
 
 
-    def summary(pts):
+    def calculate_section(self):
       'Text summary of cross-sectional properties.'
       
-      a = area(pts)
-      cx, cy = centroid(pts)
-      Ixx, Iyy, Ixy = inertia(pts)
-      I1, I2, theta = principal(Ixx, Iyy, Ixy)
+      a = self.area()
+      self.a = a
+      cx, cy = self.centroid()
+      self.cx = cx
+      self.cy = cy
+      Ixx, Iyy, Ixy = self.inertia()
+      self.Ixx = Ixx
+      self.Iyy = Iyy
+      self.Ixy = Ixy
+      I1, I2, theta = self.principal()
+      self.I1 = I1
+      self.I2 = I2
+      self.theta = theta
       summ = """Area
       A = {}
     Centroid
@@ -111,9 +139,9 @@ class Cross_section:
       return summ
 
  
-    def outline(pts, basename='section', format='pdf', size=(8, 8), dpi=100):
+    def plot(self, pts, basename='section', format='none', size=(8, 8), dpi=100):
       'Draw an outline of the cross-section with centroid and principal axes.'
-      
+      pts = self.pts
       if pts[0] != pts[-1]:
         pts = pts + pts[:1]
       x = [ c[0] for c in pts ]
@@ -129,9 +157,9 @@ class Cross_section:
       b = .05*max(maxx - minx, maxy - miny)
   
       # Get the properties needed for the centroid and principal axes
-      cx, cy = centroid(pts)
-      i = inertia(pts)
-      p = principal(*i)
+      cx, cy = self.centroid()
+      i = self.inertia()
+      p = self.principal()
   
       # Principal axes extend 10% of the minimum dimension from the centroid
       length = min(maxx-minx, maxy-miny)/10
@@ -150,6 +178,9 @@ class Cross_section:
       ax.set_aspect('equal')
       plt.xlim(xmin=minx-b, xmax=maxx+b)
       plt.ylim(ymin=miny-b, ymax=maxy+b)
-      filename = basename + '.' + format
-      plt.savefig(filename, format=format, dpi=dpi)
-      plt.close()
+      if format == 'none':
+          plt.show()
+      else:
+        filename = basename + '.' + format
+        plt.savefig(filename, format=format, dpi=dpi)
+        plt.close()
