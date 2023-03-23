@@ -788,8 +788,7 @@ class Plotter(PlottingValues):
                 index = find_nearest(el.bending_moment, m_sag)[1]
                 offset = +self.max_val_structure * 0.001
 
-                if m_sag != abs(el.node_1.Ty):
-                 if m_sag != abs(el.node_2.Ty):
+                if m_sag != abs(el.node_1.Ty) or m_sag != abs(el.node_2.Ty):
                   if verbosity == 0:
                     x = axis_values[0][index] + np.sin(-el.angle) * offset
                     y = axis_values[1][index] + np.cos(-el.angle) * offset
