@@ -9,6 +9,7 @@ from . import system_components
 from anastruct.vertex import vertex_range
 from anastruct.sectionbase import properties
 from anastruct.fem.util.load import LoadCase
+import pandas as pd
 
 from typing import (
     Tuple,
@@ -643,7 +644,6 @@ class SystemElements:
             return system_components.solver.stiffness_adaptation(
                 self, verbosity, max_iter
             )
-
         system_components.assembly.assemble_system_matrix(self)
         if geometrical_non_linear:
             discretize_kwargs = kwargs.get("discretize_kwargs", None)
@@ -654,14 +654,11 @@ class SystemElements:
                 discretize_kwargs=discretize_kwargs,
             )
             return self.system_displacement_vector
-
         system_components.assembly.process_conditions(self)
-
         # Resolver el problema estático Ku=f !!!!!!!!
         reduced_displacement_vector = np.linalg.solve(
             self.reduced_system_matrix, self.reduced_force_vector
         )
-
         # add the solution of the reduced system in the complete system displacement vector
         assert self.shape_system_matrix is not None
         self.system_displacement_vector = np.zeros(self.shape_system_matrix)
@@ -670,7 +667,6 @@ class SystemElements:
             self._remainder_indexes,
             reduced_displacement_vector,
         )
-
         # Cambio el signo de los desplazamientos en x
         self.system_displacement_vector[0:len(self.system_displacement_vector):3]*=-1
         
@@ -690,7 +686,7 @@ class SystemElements:
             ]
             el.determine_force_vector()  # K*u - Esfuerzos
             
-
+         
         if not naked:
             # determining the node results in post processing class
             self.post_processor.node_results_elements()
@@ -706,7 +702,193 @@ class SystemElements:
             )
         self.printdispl()
         return self.system_displacement_vector
+
+    def optimize(
+        self,
+        force_linear: bool = False,
+        verbosity: int = 0,
+        max_iter: int = 200,
+        profile_type: str = 'IPN',
+        fyd: float = 99999999,
+        ELS: float = 0.0,
+        geometrical_non_linear: int = False,
+        **kwargs
+    ):
+
+        """
+        Resuelve la estructura.
+
+        :param force_linear: Force a linear calculation. Even when the system has non linear nodes.
+        :param verbosity: 0. Log calculation outputs. 1. silence.
+        :param max_iter: Maximum allowed iterations.
+        :param geometrical_non_linear: Calculate second order effects and determine the buckling factor.
+        :return: Displacements vector.
+
+
+        Development **kwargs:
+            :param naked: Whether or not to run the solve function without doing post processing.
+            :param discretize_kwargs: When doing a geometric non linear analysis you can reduce or increase the number
+                                      of elements created that are used for determining the buckling_factor
+        """
+
+        # kwargs: arguments for the iterative solver callers such as the _stiffness_adaptation method.
+        #                naked (bool) Default = False, if True force lines won't be computed.
+        from anastruct import Steel_profiles
+        Ematerial = 2.1E+11
+        cross_section = Steel_profiles()
+        if fyd != 0:
+          lim_tens = fyd
+        else:
+          lim_tens = 9999999999.
+        if ELS == 0.0:
+            ELS = 99999999999999999999
+        max_disp = 9999999999999999
+        von_mises = 9999
+        if profile_type == 'HEA':
+           profile_list = cross_section.HEA_profiles
+        elif profile_type == 'HEB':
+           profile_list = cross_section.HEB_profiles
+        elif profile_type == 'HEM':
+           profile_list = cross_section.HEM_profiles
+        elif profile_type == 'IPE':
+           profile_list = cross_section.IPE_profiles
+        elif profile_type == 'IPN':
+           profile_list = cross_section.IPN_profiles
+        elif profile_type == 'UPN':
+           profile_list = cross_section.UPN_profiles
+           
+        i_prof = -1
+        while lim_tens<von_mises or ELS<max_disp and i_prof<profile_list.shape[0]-1:
+            i_prof = i_prof+1
+            sel_profile = profile_list.iloc[[i_prof]]
+            Name_profile = profile_list['Perfil'][i_prof]
+            Inertia = float(sel_profile['Iy']*1E-8)
+            Wy = float(sel_profile['Wy']*1E+3)
+            hp = float(sel_profile['h'])
+            tw = float(sel_profile['tw'])
+            Av = hp*tw
+            for node_id in self.node_map:
+                system_components.util.check_internal_hinges(self, node_id)
     
+            if self.system_displacement_vector is None:
+                system_components.assembly.process_supports(self)
+    
+            naked = kwargs.get("naked", False)
+    
+            if not naked:
+                if not self.validate():
+                    if all(
+                        ["general" in element.type for element in self.element_map.values()]
+                    ):
+                        raise FEMException(
+                            "StabilityError",
+                            "The eigenvalues of the stiffness matrix are non zero, "
+                            "which indicates a instable structure. "
+                            "Check your support conditions",
+                        )
+    
+            # (Re)set force vectors
+            self.EI = Ematerial*Inertia
+            for el in self.element_map.values():
+                el.reset()
+                el.EI = Ematerial*Inertia
+                #print(el.constitutive_matrix)
+                el.constitutive_matrix = el.constitutive_matrix*0;
+                el.compile_constitutive_matrix(el.EA,el.EI,el.l)
+                el.compile_stiffness_matrix()
+                #print(el.constitutive_matrix)
+                #print(Ematerial*Inertia)
+            #for el in self.node_map.values():
+                #print(el.elements)
+            system_components.assembly.prep_matrix_forces(self)
+            assert (
+                self.system_force_vector is not None
+            ), "There are no forces on the structure"
+    
+            if self.non_linear and not force_linear:
+                return system_components.solver.stiffness_adaptation(
+                    self, verbosity, max_iter
+                )
+            self.system_matrix = None
+            system_components.assembly.assemble_system_matrix(self)
+            if geometrical_non_linear:
+                discretize_kwargs = kwargs.get("discretize_kwargs", None)
+                self.buckling_factor = system_components.solver.geometrically_non_linear(
+                    self,
+                    verbosity,
+                    return_buckling_factor=True,
+                    discretize_kwargs=discretize_kwargs,
+                )
+                return self.system_displacement_vector
+            system_components.assembly.process_conditions(self)
+            # Resolver el problema estático Ku=f !!!!!!!!
+            reduced_displacement_vector = np.linalg.solve(
+                self.reduced_system_matrix, self.reduced_force_vector
+            )
+            # add the solution of the reduced system in the complete system displacement vector
+            assert self.shape_system_matrix is not None
+            self.system_displacement_vector = np.zeros(self.shape_system_matrix)
+            np.put(
+                self.system_displacement_vector,
+                self._remainder_indexes,
+                reduced_displacement_vector,
+            )
+            # Cambio el signo de los desplazamientos en x
+            self.system_displacement_vector[0:len(self.system_displacement_vector):3]*=-1
+            
+            # determine the displacement vector of the elements
+            for el in self.element_map.values():
+                index_node_1 = (el.node_1.id - 1) * 3
+                index_node_2 = (el.node_2.id - 1) * 3
+    
+                # node 1 ux, uz, phi (3 grados de libertad)
+                el.element_displacement_vector[:3] = self.system_displacement_vector[
+                    index_node_1 : index_node_1 + 3
+                ]
+    
+                # node 2 ux, uz, phi (3 grados de libertad)
+                el.element_displacement_vector[3:] = self.system_displacement_vector[
+                    index_node_2 : index_node_2 + 3
+                ]
+                el.determine_force_vector()  # K*u - Esfuerzos
+            if not naked:
+                # determining the node results in post processing class
+                self.post_processor.node_results_elements()
+                self.post_processor.node_results_system()
+                self.post_processor.reaction_forces()
+                self.post_processor.element_results()
+    
+                # check the values in the displacement vector for extreme values, indicating a flawed calculation
+                assert np.any(self.system_displacement_vector < 1e6), (
+                    "The displacements of the structure exceed 1e6. "
+                    "Check your support conditions,"
+                    "or your elements Young's modulus"
+                )
+            resultados = self.get_element_results(0)
+            resultados = pd.DataFrame(resultados)
+            Mdmax = 1000*np.max(np.array([resultados['Mmax'].abs().max(),resultados['Mmin'].abs().max()])) 
+            Vdmax = np.max(np.array([resultados['Qmax'].abs().max(),resultados['Qmin'].abs().max()])) 
+            dispv = np.max(np.array([resultados['umax'].abs().max(),resultados['umin'].abs().max()])) 
+            disph = np.max(np.array([resultados['wmax'].abs().max(),resultados['wmin'].abs().max()])) 
+            du = np.max(np.abs(self.system_displacement_vector[0:-1:3]))
+            dy = np.max(np.abs(self.system_displacement_vector[1:-1:3]))
+            max_disp = np.max(np.array([dispv,disph,du,dy]))
+            sigma_n = Mdmax/Wy
+            tau = Vdmax/Av
+            von_mises = np.sqrt(sigma_n**2+3*tau**2)
+        print(' ')
+        print('************************')
+        print('The optimal profile is: '+Name_profile)
+        print('I = ' + str(Inertia) + ' W = '+str(Wy) + ', hw = ' + str(hp) + ', tw = ' + str(tw) + ', Av = '+str(Av))
+        print('Mmax = '+str(Mdmax))
+        print('Vdmax = '+str(Vdmax))
+        print('Sigma_n = '+str(sigma_n))
+        print('tau = '+str(tau))
+        print('Sigma_co = '+str(von_mises))
+        self.printdispl()
+        return self.system_displacement_vector
+
+
     def printdispl(
         self,
         force_linear: bool = False,
@@ -1424,6 +1606,8 @@ class SystemElements:
                             "w": el.deflection if verbose else None,
                             "Mmin": np.min(el.bending_moment),
                             "Mmax": np.max(el.bending_moment),
+                            "M1": el.bending_moment[0],
+                            "M2": el.bending_moment[-1],
                             "M": el.bending_moment if verbose else None,
                             "Qmin": np.min(el.shear_force),
                             "Qmax": np.max(el.shear_force),

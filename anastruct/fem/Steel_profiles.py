@@ -1,7 +1,12 @@
 # Import pandas package
 import pandas as pd
 
-IPE_profiles = {'Perfil':['IPE-80','IPE-100','IPE-120','IPE-140',
+class Steel_profiles:
+    
+    
+    def __init__(
+        self,
+        IPE_profiles: dict = {'Perfil':['IPE-80','IPE-100','IPE-120','IPE-140',
         'IPE-160','IPE-180','IPE-200','IPE-220','IPE-240','IPE-270','IPE-300','IPE-330','IPE-360',
         'IPE-400','IPE-450','IPE-500','IPE-550','IPE-600'],
         'h':[80,100,120,140,160,180,200,220,240,270,300,330,360,400,450,500,550,600],
@@ -21,13 +26,8 @@ IPE_profiles = {'Perfil':['IPE-80','IPE-100','IPE-120','IPE-140',
         'Ia':[118,351,890,1981,3959,7431,12990,22670,37390,70580,125900,199100,313600,490000,791000,1249000,1884000,2846000],
         'hW':[60,75,93,112,127,146,159,178,190,220,249,271,299,331,379,426,468,514],
         'Curva pandeo y':['a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a'],
-        'Curva pandeo z':['b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b']}
-# Convert the dictionary into DataFrame 
-IPE_profiles = pd.DataFrame(IPE_profiles)
-
-
-
-IPN_profiles = {'Perfil':['IPN-80','IPN-100','IPN-120','IPN-140','IPN-160','IPN-180','IPN-200',
+        'Curva pandeo z':['b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b']},
+        IPN_profiles: dict = {'Perfil':['IPN-80','IPN-100','IPN-120','IPN-140','IPN-160','IPN-180','IPN-200',
         'IPN-220','IPN-240','IPN-260','IPN-280','IPN-300','IPN-320','IPN-340',
         'IPN-360','IPN-380','IPN-400','IPN-450','IPN-500','IPN-550','IPN-600'],
         'h':[80,100,120,140,160,180,200,220,240,260,280,300,320,340,360,380,400,450,500,550,600],
@@ -48,11 +48,8 @@ IPN_profiles = {'Perfil':['IPN-80','IPN-100','IPN-120','IPN-140','IPN-160','IPN-
         'Ia':[87.5,268,685,1540,3138,5942,10520,17760,28730,44070,64580,91850,128800,176300,240100,318700,419600,791100,1403000,2389000,3821000],
         'hW':[59,75,92,109,125,142,159,176,192,208,225,241,258,274,290,306,323,363,404,445,485],
         'Curva pandeo y':['a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a','a'],
-        'Curva pandeo z':['b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b']}
-IPN_profiles = pd.DataFrame(IPN_profiles)
-
-
-HEB_profiles = {'Perfil':['HEB-100','HEB-120','HEB-140','HEB-160','HEB-180','HEB-200','HEB-220',
+        'Curva pandeo z':['b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b']},
+        HEB_profiles: dict = {'Perfil':['HEB-100','HEB-120','HEB-140','HEB-160','HEB-180','HEB-200','HEB-220',
         'HEB-240','HEB-260','HEB-280','HEB-300','HEB-320','HEB-340','HEB-360',
         'HEB-400','HEB-450','HEB-500','HEB-550','HEB-600'],
         'h':[100,120,140,160,180,200,220,240,260,280,300,320,340,360,400,450,500,550,600],
@@ -72,12 +69,8 @@ HEB_profiles = {'Perfil':['HEB-100','HEB-120','HEB-140','HEB-160','HEB-180','HEB
         'Ia':[3375,9410,22480,47940,93750,171100,294500,486900,753700,1130000,1688000,2069000,2454000,2883000,3817000,5280000,7018000,8856000,10965000],
         'hW':[56,74,92,104,122,134,152,164,177,196,208,225,243,261,298,344,390,438,486],
         'Curva pandeo y':['b','b','b','b','b','b','b','b','b','b','b','b','b','b','a','a','a','a','a'],
-        'Curva pandeo z':['c','c','c','c','c','c','c','c','c','c','c','c','c','c','b','b','b','b','b']}
-HEB_profiles = pd.DataFrame(HEB_profiles)
-
-
-
-HEA_profiles = {'Perfil':['HEA-100','HEA-120','HEA-140','HEA-160','HEA-180','HEA-200','HEA-220',
+        'Curva pandeo z':['c','c','c','c','c','c','c','c','c','c','c','c','c','c','b','b','b','b','b']},
+        HEA_profiles: dict = {'Perfil':['HEA-100','HEA-120','HEA-140','HEA-160','HEA-180','HEA-200','HEA-220',
         'HEA-240','HEA-260','HEA-280','HEA-300','HEA-320','HEA-340','HEA-360','HEA-400','HEA-450','HEA-500',
         'HEA-550','HEA-600'],
         'h':[96,114,133,152,171,190,210,230,250,270,290,310,330,350,390,440,490,540,590],
@@ -97,11 +90,8 @@ HEA_profiles = {'Perfil':['HEA-100','HEA-120','HEA-140','HEA-160','HEA-180','HEA
         'Ia':[2581,6472,15060,31410,60210,108000,193300,328500,516400,785400,1200000,1512000,1824000,2177000,2942000,4148000,5643000,7189000,8978000],
         'hW':[56,74,92,104,122,134,152,164,177,196,208,225,243,261,298,344,390,438,486],
         'Curva pandeo y':['b','b','b','b','b','b','b','b','b','b','b','b','b','b','a','a','a','a','a'],
-        'Curva pandeo z':['c','c','c','c','c','c','c','c','c','c','c','c','c','c','b','b','b','b','b']}
-HEA_profiles = pd.DataFrame(HEA_profiles)
-
-
-HEM_profiles = {'Perfil':['HEM-100','HEM-120','HEM-140','HEM-160','HEM-180','HEM-200',
+        'Curva pandeo z':['c','c','c','c','c','c','c','c','c','c','c','c','c','c','b','b','b','b','b']},
+        HEM_profiles: dict = {'Perfil':['HEM-100','HEM-120','HEM-140','HEM-160','HEM-180','HEM-200',
         'HEM-220','HEM-240','HEM-260','HEM-280','HEM-300','HEM-320','HEM-340',
         'HEM-360','HEM-400','HEM-450','HEM-500','HEM-550','HEM-600'],
         'h':[120,140,160,180,200,220,240,270,290,310,340,359,377,395,432,478,524,572,620],
@@ -121,10 +111,8 @@ HEM_profiles = {'Perfil':['HEM-100','HEM-120','HEM-140','HEM-160','HEM-180','HEM
         'Ia':[9925,24790,54330,108100,199300,346300,572700,1152000,1728000,2520000,2903000,4386000,5004000,5858000,7410000,9252000,11187000,13516000,15080000],
         'hW':[56,74,92,104,122,134,152,164,177,196,208,225,243,261,298,344,390,438,486],
         'Curva pandeo y':['b','b','b','b','b','b','b','b','b','b','b','b','a','a','a','a','a','a','a'],
-        'Curva pandeo z':['c','c','c','c','c','c','c','c','c','c','c','c','b','b','b','b','b','b','b']}
-HEM_profiles = pd.DataFrame(HEM_profiles)
-
-UPN_profiles = {'Perfil':['UPN-80','UPN-100','UPN-120','UPN-140','UPN-160','UPN-180','UPN-200','UPN-220',
+        'Curva pandeo z':['c','c','c','c','c','c','c','c','c','c','c','c','b','b','b','b','b','b','b']},
+        UPN_profiles: dict = {'Perfil':['UPN-80','UPN-100','UPN-120','UPN-140','UPN-160','UPN-180','UPN-200','UPN-220',
         'UPN-240','UPN-260','UPN-280','UPN-300','UPN-320','UPN-350','UPN-380','UPN-400'],
         'h':[80,100,120,140,160,180,200,220,240,260,280,300,320,350,380,400],
         'b':[45,50,55,60,65,70,75,80,85,90,95,100,100,100,102,110],
@@ -143,5 +131,12 @@ UPN_profiles = {'Perfil':['UPN-80','UPN-100','UPN-120','UPN-140','UPN-160','UPN-
         'ys':[1.45,1.55,1.6,1.75,1.84,1.92,2.01,2.14,2.23,2.36,2.53,2.7,2.59,2.4,2.38,2.71],
         'hW':[46,64,82,98,115,133,151,167,184,200,216,232,246,282,313,324],
         'Curva pandeo y':['c','c','c','c','c','c','c','c','c','c','c','c','c','c','c','c'],
-        'Curva pandeo z':['c','c','c','c','c','c','c','c','c','c','c','c','c','c','c','c']}
-UPN_profiles = pd.DataFrame(UPN_profiles)
+        'Curva pandeo z':['c','c','c','c','c','c','c','c','c','c','c','c','c','c','c','c']},
+    ):
+        # Convert the dictionary into DataFrame 
+        self.IPE_profiles = pd.DataFrame(IPE_profiles)
+        self.IPN_profiles = pd.DataFrame(IPN_profiles)
+        self.HEB_profiles = pd.DataFrame(HEB_profiles)
+        self.HEA_profiles = pd.DataFrame(HEA_profiles)
+        self.HEM_profiles = pd.DataFrame(HEM_profiles)
+        self.UPN_profiles = pd.DataFrame(UPN_profiles)

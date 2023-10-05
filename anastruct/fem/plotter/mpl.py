@@ -601,7 +601,7 @@ class Plotter(PlottingValues):
             va="center",
         )
 
-    def _add_element_values(self, x_val, y_val, value, index, digits=2):
+    def _add_element_values(self, x_val, y_val, value, index, digits):
         self.one_fig.text(
             x_val[index],
             y_val[index],
@@ -616,7 +616,7 @@ class Plotter(PlottingValues):
         axis_values,
         force_1=None,
         force_2=None,
-        digits=2,
+        digits=5,
         node_results=True,
         fill_polygon=True,
         color=0,
@@ -784,18 +784,27 @@ class Plotter(PlottingValues):
             )
 
             if el.all_qp_load:
-                m_sag = max(abs(el.bending_moment))
-                index = find_nearest(el.bending_moment, m_sag)[1]
+                m_sag = abs(el.bending_moment)
+                index_z_sh = find_nearest(el.shear_force, 0.0)
+                index = index_z_sh[1]
+                m_sag = m_sag[index_z_sh[1]]
                 offset = +self.max_val_structure * 0.001
-
-                if m_sag != abs(el.node_1.Ty) or m_sag != abs(el.node_2.Ty):
-                  if verbosity == 0:
-                    x = axis_values[0][index] + np.sin(-el.angle) * offset
-                    y = axis_values[1][index] + np.cos(-el.angle) * offset
-                    x_orig = axis_values_orig[0][index]
-                    y_orig = axis_values_orig[1][index]
-                    self.one_fig.text(x, y, "%s" % round(m_sag, 1), fontsize=8, color="r")
+                if math.isclose(index_z_sh[0], 0, abs_tol=max(abs(el.shear_force))*0.5e-2):
+                    x = axis_values[0][index_z_sh[1]] + np.sin(-el.angle) * offset
+                    y = axis_values[1][index_z_sh[1]] + np.cos(-el.angle) * offset
+                    x_orig = axis_values_orig[0][index_z_sh[1]]
+                    y_orig = axis_values_orig[1][index_z_sh[1]]
+                    m_sag_sz = el.bending_moment[index_z_sh[1]]
+                    self.one_fig.text(x, y, "%s" % round(m_sag_sz, 1), fontsize=8, color="r")
                     print('Local maximum bending moment - Beam: '+str(cont_elem)+' Mmax:'+str(round(m_sag, 1))+'; Position: (x,y) = ('+str(round(x_orig, 3))+','+str(round(y_orig, 3))+')')
+                #if m_sag != abs(el.node_1.Ty) and m_sag != abs(el.node_2.Ty):
+                  #if verbosity == 0:
+                   # x = axis_values[0][index] + np.sin(-el.angle) * offset
+                   # y = axis_values[1][index] + np.cos(-el.angle) * offset
+                   # x_orig = axis_values_orig[0][index]
+                   # y_orig = axis_values_orig[1][index]
+                  #  self.one_fig.text(x, y, "%s" % round(m_sag, 1), fontsize=8, color="r")
+                  #  print('Local maximum bending moment - Beam: '+str(cont_elem)+' Mmax:'+str(round(m_sag, 1))+'; Position: (x,y) = ('+str(round(x_orig, 3))+','+str(round(y_orig, 3))+')')
                     cont_elem += 1
         if show:
             self.plot()
@@ -986,6 +995,7 @@ class Plotter(PlottingValues):
         show=True,
         linear=False,
         gridplot=False,
+        digits=5,
     ):
         self.plot_structure(figsize, 1, scale=scale, offset=offset, gridplot=gridplot)
         if factor is None:
@@ -1010,7 +1020,7 @@ class Plotter(PlottingValues):
         for el in self.system.element_map.values():
             axis_values = plot_values_deflection(el, factor, linear)
             # Pongo 5 digitos para llegar hasta la centésima de milímetro
-            self.plot_result(axis_values, node_results=False, fill_polygon=False, digits=4)
+            self.plot_result(axis_values, node_results=False, fill_polygon=False, digits=5)
 
             if el.type == "general":
                 # index of the max deflection
@@ -1019,17 +1029,34 @@ class Plotter(PlottingValues):
                 xd, yd = plot_values_deflection(el, 1.0, linear)
                 deflection = ((xd - x) ** 2 + (yd - y) ** 2) ** 0.5
                 index = np.argmax(np.abs(deflection))
-
+                print('Maximum deflection: '+str(round(deflection[index], 4))+'; Position: (x,y) = ('+str(round(x[index], 3))+','+str(round(y[index], 3))+')')
                 if verbosity == 1:
 
                     if index != 0 or index != el.deflection.size:
-                        self._add_element_values(
+                        if not math.isclose(deflection[index], deflection[0], rel_tol=1e-5, abs_tol=1e-9) and not math.isclose(deflection[index], deflection[-1], rel_tol=1e-5, abs_tol=1e-9):
+                         self._add_element_values(
                             axis_values[0],
                             axis_values[1],
                             deflection[index],
                             index,
-                            3,
-                        )
+                            digits,
+                         )
+                        if not math.isclose(deflection[0], 0, rel_tol=1e-2, abs_tol=1e-3):
+                          self._add_element_values(
+                            axis_values[0],
+                            axis_values[1],
+                            deflection[0],
+                            0,
+                            digits,
+                          )
+                        if not math.isclose(deflection[-1], 0, rel_tol=1e-2, abs_tol=1e-3):
+                          self._add_element_values(
+                            axis_values[0],
+                            axis_values[1],
+                            deflection[-1],
+                            len(deflection)-1,
+                            digits,
+                          )
         if show:
             self.plot()
         else:
