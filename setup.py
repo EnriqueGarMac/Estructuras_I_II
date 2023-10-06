@@ -1,12 +1,14 @@
 import sys
 from setuptools import setup
+import collections
+collections.Iterable = collections.abc.Iterable
 
 setup(
     name="anastruct",
     description="Análisis de pórticos planos",
     author="Enrique GM",
     author_email="enriquegm@ugr.es",
-    url="https://github.com/EnriqueGarMac/Estructuras_I",
+    url="https://github.com/EnriqueGarMac/Estructuras_I_II",
     license="GPL-3.0",
     packages=[
         "anastruct",
