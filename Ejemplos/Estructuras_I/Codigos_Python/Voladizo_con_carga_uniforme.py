@@ -6,6 +6,8 @@ Created on Mon Sep 13 13:54:16 2021
 """
 import numpy as np
 from anastruct import SystemElements
+import collections
+collections.Iterable = collections.abc.Iterable
 
 ss = SystemElements()
 

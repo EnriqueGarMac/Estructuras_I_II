@@ -6,7 +6,10 @@ Created on Mon Sep 13 13:54:16 2021
 """
 
 from anastruct import SystemElements
+import collections
+collections.Iterable = collections.abc.Iterable
 
+# Crear objeto para la estructura
 ss = SystemElements()
 
 # Construcción de la estructura

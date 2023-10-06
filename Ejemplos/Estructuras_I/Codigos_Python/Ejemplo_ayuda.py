@@ -5,7 +5,10 @@ Created on Tue Sep 14 18:31:58 2021
 @author: Enrique GM
 """
 from anastruct import SystemElements
+import collections
+collections.Iterable = collections.abc.Iterable
 
+# Crear objeto para la estructura
 ss = SystemElements()
 
 ss.add_element(location=[[0, 0], [3, 4]])

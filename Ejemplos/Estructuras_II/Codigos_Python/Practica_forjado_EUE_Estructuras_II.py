@@ -20,6 +20,9 @@ from anastruct import Steel_profiles
 import pandas as pd
 import numpy as np
 from anastruct import SystemElements
+import collections
+collections.Iterable = collections.abc.Iterable
+
 
 cross_section = Steel_profiles()
 sel_profile = cross_section.IPE_profiles[cross_section.IPE_profiles['Perfil'] == 'IPE-180']

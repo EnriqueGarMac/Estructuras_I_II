@@ -17,9 +17,12 @@ from anastruct import Steel_profiles
 import pandas as pd
 import numpy as np
 from anastruct import SystemElements
+import collections
+collections.Iterable = collections.abc.Iterable
+
 
 cross_section = Steel_profiles()
-sel_profile = cross_section.IPE_profiles[cross_section.IPE_profiles['Perfil'] == 'IPE-120']
+sel_profile = cross_section.IPE_profiles[cross_section.IPE_profiles['Perfil'] == 'IPE-180']
 I = float(sel_profile['Iy']*1E-8)
 Wy = float(sel_profile['Wy']*1E+3)
 A = float(sel_profile['A']*1E+2)
@@ -27,9 +30,8 @@ hp = float(sel_profile['h'])
 tw = float(sel_profile['tw'])
 Av = hp*tw
 EI = 2.1E+11*I
-
-h = np.sqrt(7**2-(5.4-4)**2)
-sinalph = h/7.0
+La = 5.0
+Lb = 2.0
 
 g_G = 1.35
 g_Q = 1.50
@@ -43,39 +45,40 @@ SU = 2000.*g_Q
 Q = PF+CMS+SU
 print('Carga por unidad de superficie: '+str(Q/1000.)+ ' kN/m2')
 
-qa = Q*5.4*sinalph/2
-qb = Q*4*sinalph/2
+qac = 7000.*g_G
+qab = Q*1.60/2.0
 
-ca = 7*qb+(qa-qb)*7/2
-cb = qb*7**2/2+(qa-qb)*7**2/6
-cc = -7**2*0.25*(-qa+(qa-qb)/5)
-A = np.array([[1,1,0],
-              [0,7,1],
-              [7,0,-3]])
-np.matmul(np.linalg.inv(A),np.array([[ca/1000],[cb/1000],[cc/1000]]))
+ca = qab*5+qac*7
+cb = qab*5**2/2+qac*7**2/2
+cc = (qac+qab)*5**3
+cd = (qac+qab)*7**4-qab*2**4
+A = np.array([[1,1,1,0],
+              [0,5,7,0],
+              [4*5**2,0,0,4*3*2],
+              [4*7**3,4*2**3,0,7*4*3*2]])
+np.matmul(np.linalg.inv(A),np.array([[ca/1000],[cb/1000],[cc/1000],[cd/1000]]))
 
-ss = SystemElements(mesh=1600)
+ss = SystemElements(mesh=200)
 
 # Añadimos elementos
-ss.add_element(location=[[0.0, 0.0], [4.,0.0]], EI = EI)
-ss.add_element(location=[[4.0, 0.0], [8.,0.0]], EI = EI)
+ss.add_element(location=[[0.0, 0.0], [La,0.0]], EI = EI)
+ss.add_element(location=[[La, 0.0], [La+Lb,0.0]], EI = EI)
 
 # Añadimos cargas
-ss.q_load(element_id=1,  q=(15,0))
-ss.q_load(element_id=2,  q=(0,15))
-ss.moment_load(2, Ty=40)
+ss.q_load(element_id=1,  q=(qac+qab,qac+qab))
+ss.q_load(element_id=2,  q=(qac,qac))
 
 # Añadimos condiciones de borde
 ss.add_support_hinged(node_id=1)
-ss.add_support_hinged(node_id=2)         
-ss.add_support_hinged(node_id=3)    
+ss.add_support_hinged(node_id=2)       
+ss.add_support_hinged(node_id=3)  
 
 # Mostramos estructura generada
 ss.show_structure()
 
 # Resolvemos la estructura
 ss.solve()
-ss.optimize(profile_type='IPE', fyd = 275/1.05)
+#ss.optimize(profile_type='IPE', fyd = 275/1.05)
 
 # Mostramos las reacciones
 ss.show_reaction_force()
@@ -87,7 +90,7 @@ ss.show_bending_moment()
 # Mostramos cortantes
 ss.show_shear_force()
 
-ss.show_displacement(factor = 10000)
+ss.show_displacement(factor = 100)
 
 resultados = ss.get_element_results(0)
 resultados = pd.DataFrame(resultados)
