@@ -11,7 +11,7 @@ de las asignaturas Estructuras I y II del grado de Edificación de la Universida
 ## Instalación
 
 ```
-$ !pip install git+https://github.com/EnriqueGarMac/Estructuras_I.git
+$ !pip install git+https://github.com/EnriqueGarMac/Estructuras_I_II.git
 ```
 
 
