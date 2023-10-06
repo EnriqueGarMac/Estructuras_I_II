@@ -23,6 +23,7 @@ A continuación se listan los ejemplos de práctica disponibles
 * Ejercicio 3 - relación de celosías --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Ejercicio_3_Rel_celosias.ipynb)
 * Practica informática 2 -- 2022/2023 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Practica_informatica_II.ipynb)
 * Problema 2 Menabrea resuelto en clase --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Problema_2_Menabrea.ipynb)
-
+* Practica 1 - Esfuerzos en vigas - Ejercicio 1 -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Practica_I_Ej_1_Calculo_de_esfuerzos_en_vigas_curso23_24.ipynb)
+* Practica 1 - Esfuerzos en vigas - Ejercicio 2 -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Practica_I_Ej_2_Calculo_de_esfuerzos_en_vigas_curso23_24.ipynb)
 
 
