@@ -10,6 +10,9 @@ from anastruct.vertex import vertex_range
 from anastruct.sectionbase import properties
 from anastruct.fem.util.load import LoadCase
 import pandas as pd
+import collections
+collections.Iterable = collections.abc.Iterable
+
 
 from typing import (
     Tuple,
