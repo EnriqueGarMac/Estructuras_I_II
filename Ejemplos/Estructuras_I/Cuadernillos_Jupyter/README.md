@@ -26,5 +26,6 @@ A continuación se listan los ejemplos de práctica disponibles
 * Problema 2 Menabrea resuelto en clase --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Problema_2_Menabrea.ipynb)
 * Practica 1 - Esfuerzos en vigas - Ejercicio 1 -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Practica_I_Ej_1_Calculo_de_esfuerzos_en_vigas_curso23_24.ipynb)
 * Practica 1 - Esfuerzos en vigas - Ejercicio 2 -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Practica_I_Ej_2_Calculo_de_esfuerzos_en_vigas_curso23_24.ipynb)
+* Ejercicio 1 - Práctica Métodos Energéticos -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Ejercicio_1_practica_Energeticos.ipynb)
 
 
