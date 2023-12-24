@@ -29,5 +29,7 @@ A continuación se listan los ejemplos de práctica disponibles
 * Ejercicio 1 - Práctica Métodos Energéticos -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Ejercicio_1_practica_Energeticos.ipynb)
 * Práctica I Métodos Energéticos -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Practica_I_energeticos_23_24.ipynb)
 * Práctica II Métodos Energéticos -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Ejercicio_2_practica_Energeticos.ipynb)
+* Entregable Energéticos -- 2023/2024 --- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EnriqueGarMac/Estructuras_I/blob/main/Ejemplos/Estructuras_I/Cuadernillos_Jupyter/Entregable_energeticos_23_24.ipynb)
+
 
 
