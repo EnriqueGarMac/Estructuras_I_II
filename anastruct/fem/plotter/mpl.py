@@ -789,7 +789,10 @@ class Plotter(PlottingValues):
                 index = index_z_sh[1]
                 m_sag = m_sag[index_z_sh[1]]
                 offset = +self.max_val_structure * 0.001
-                if math.isclose(index_z_sh[0], 0, abs_tol=max(abs(el.shear_force))*0.5e-2):
+                nelem_pos = sum(1 for i in el.shear_force if i > 0)
+                nelem_ne = sum(1 for i in el.shear_force if i < 0)
+                cond_elems = nelem_pos>2 and nelem_ne>2
+                if math.isclose(index_z_sh[0], 0, abs_tol=max(abs(el.shear_force))*0.5e-2) or  cond_elems:
                     x = axis_values[0][index_z_sh[1]] + np.sin(-el.angle) * offset
                     y = axis_values[1][index_z_sh[1]] + np.cos(-el.angle) * offset
                     x_orig = axis_values_orig[0][index_z_sh[1]]
